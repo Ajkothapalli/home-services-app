@@ -1,0 +1,24 @@
+{
+  "name": "HomeServAI",
+  "displayName": "HomeServ AI",
+  "version": "0.1.0",
+  "bundleId": "com.homeservai.app",
+  "android": {
+    "package": "com.homeservai.app",
+    "versionCode": 1
+  },
+  "ios": {
+    "bundleIdentifier": "com.homeservai.app",
+    "buildNumber": "1"
+  },
+  "permissions": [
+    "CAMERA",
+    "READ_EXTERNAL_STORAGE",
+    "WRITE_EXTERNAL_STORAGE",
+    "ACCESS_FINE_LOCATION",
+    "ACCESS_COARSE_LOCATION",
+    "RECEIVE_BOOT_COMPLETED",
+    "VIBRATE",
+    "INTERNET"
+  ]
+}

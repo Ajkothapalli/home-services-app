@@ -252,19 +252,26 @@ export default function LandingPage() {
                 className={`group block ${isWide ? "sm:col-span-2 lg:col-span-1" : ""}`}
               >
                 <div
-                  className="relative overflow-hidden rounded-2xl h-64 sm:h-72 cursor-pointer transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:-translate-y-2"
+                  className="relative overflow-hidden rounded-2xl h-64 sm:h-72 cursor-pointer"
                   style={{
                     boxShadow: "0 4px 24px rgba(0,0,0,0.10)",
-                    transition: "transform 500ms cubic-bezier(0.34,1.56,0.64,1), box-shadow 400ms ease",
+                    transition: "transform 600ms cubic-bezier(0.25,0.46,0.45,0.94), box-shadow 600ms cubic-bezier(0.25,0.46,0.45,0.94)",
                   }}
-                  onMouseEnter={e => (e.currentTarget.style.boxShadow = "0 20px 48px rgba(0,0,0,0.22)")}
-                  onMouseLeave={e => (e.currentTarget.style.boxShadow = "0 4px 24px rgba(0,0,0,0.10)")}
+                  onMouseEnter={e => {
+                    e.currentTarget.style.transform = "translateY(-6px)"
+                    e.currentTarget.style.boxShadow = "0 20px 48px rgba(0,0,0,0.22)"
+                  }}
+                  onMouseLeave={e => {
+                    e.currentTarget.style.transform = "translateY(0)"
+                    e.currentTarget.style.boxShadow = "0 4px 24px rgba(0,0,0,0.10)"
+                  }}
                 >
                   <Image
                     src={img}
                     alt={s.name}
                     fill
-                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                    className="object-cover group-hover:scale-110"
+                    style={{ transition: "transform 600ms cubic-bezier(0.25,0.46,0.45,0.94)", willChange: "transform" }}
                     sizes="(max-width: 640px) 100vw, 50vw"
                   />
                   {/* Dark gradient from bottom — lightens slightly on hover */}
@@ -333,11 +340,11 @@ export default function LandingPage() {
               <div key={item.step} className="group relative">
 
                 <div
-                  className="rounded-2xl overflow-hidden transition-all duration-500"
+                  className="rounded-2xl overflow-hidden"
                   style={{
                     boxShadow: "0 4px 24px rgba(13,82,48,0.08)",
                     border: "1px solid rgba(46,179,116,0.10)",
-                    transition: "transform 500ms cubic-bezier(0.34,1.56,0.64,1), box-shadow 400ms ease",
+                    transition: "transform 600ms cubic-bezier(0.25,0.46,0.45,0.94), box-shadow 600ms cubic-bezier(0.25,0.46,0.45,0.94)",
                   }}
                   onMouseEnter={e => {
                     e.currentTarget.style.transform = "translateY(-8px)"
@@ -354,7 +361,8 @@ export default function LandingPage() {
                       src={item.img}
                       alt={item.title}
                       fill
-                      className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                      className="object-cover group-hover:scale-110"
+                      style={{ transition: "transform 600ms cubic-bezier(0.25,0.46,0.45,0.94)", willChange: "transform" }}
                       sizes="(max-width: 768px) 100vw, 33vw"
                     />
                     <div className="absolute inset-0 transition-opacity duration-400 group-hover:opacity-60"

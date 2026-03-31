@@ -16,7 +16,7 @@ const SERVICE_IMAGES: Record<string, string> = {
   "welding":        "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=800&q=80",
 }
 
-// Hero background — professional working on wall repair
+// Hero background — fallback poster for video
 const HERO_BG = "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1600&q=85"
 
 // Trust / social proof photos
@@ -121,16 +121,18 @@ export default function LandingPage() {
 
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
       <section className="relative min-h-[88vh] flex items-center overflow-hidden">
-        {/* Full-bleed background photo */}
+        {/* Full-bleed background video */}
         <div className="absolute inset-0">
-          <Image
-            src={HERO_BG}
-            alt="Professional home repair"
-            fill
-            className="object-cover object-center"
-            priority
-            sizes="100vw"
-          />
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover object-center"
+            poster={HERO_BG}
+          >
+            <source src="/videos/hero-bg.mp4" type="video/mp4" />
+          </video>
           {/* Dark gradient overlay — left heavy so text is legible */}
           <div className="absolute inset-0" style={{
             background: "linear-gradient(105deg, rgba(4,20,10,0.88) 0%, rgba(7,40,20,0.72) 45%, rgba(10,60,30,0.35) 75%, transparent 100%)"

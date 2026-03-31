@@ -270,7 +270,7 @@ export default function LandingPage() {
                     src={img}
                     alt={s.name}
                     fill
-                    className="object-cover group-hover:scale-110"
+                    className="object-cover scale-100 group-hover:scale-110"
                     style={{ transition: "transform 600ms cubic-bezier(0.25,0.46,0.45,0.94)", willChange: "transform" }}
                     sizes="(max-width: 640px) 100vw, 50vw"
                   />
@@ -361,7 +361,7 @@ export default function LandingPage() {
                       src={item.img}
                       alt={item.title}
                       fill
-                      className="object-cover group-hover:scale-110"
+                      className="object-cover scale-100 group-hover:scale-110"
                       style={{ transition: "transform 600ms cubic-bezier(0.25,0.46,0.45,0.94)", willChange: "transform" }}
                       sizes="(max-width: 768px) 100vw, 33vw"
                     />

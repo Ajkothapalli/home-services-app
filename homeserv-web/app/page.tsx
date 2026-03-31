@@ -251,36 +251,43 @@ export default function LandingPage() {
                 href="/auth/customer"
                 className={`group block ${isWide ? "sm:col-span-2 lg:col-span-1" : ""}`}
               >
-                <div className="relative overflow-hidden rounded-2xl h-64 sm:h-72 cursor-pointer"
-                  style={{ boxShadow: "0 4px 24px rgba(0,0,0,0.10)" }}>
+                <div
+                  className="relative overflow-hidden rounded-2xl h-64 sm:h-72 cursor-pointer transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:-translate-y-2"
+                  style={{
+                    boxShadow: "0 4px 24px rgba(0,0,0,0.10)",
+                    transition: "transform 500ms cubic-bezier(0.34,1.56,0.64,1), box-shadow 400ms ease",
+                  }}
+                  onMouseEnter={e => (e.currentTarget.style.boxShadow = "0 20px 48px rgba(0,0,0,0.22)")}
+                  onMouseLeave={e => (e.currentTarget.style.boxShadow = "0 4px 24px rgba(0,0,0,0.10)")}
+                >
                   <Image
                     src={img}
                     alt={s.name}
                     fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
                     sizes="(max-width: 640px) 100vw, 50vw"
                   />
-                  {/* Dark gradient from bottom */}
-                  <div className="absolute inset-0" style={{
+                  {/* Dark gradient from bottom — lightens slightly on hover */}
+                  <div className="absolute inset-0 transition-opacity duration-400 group-hover:opacity-80" style={{
                     background: "linear-gradient(to top, rgba(4,14,8,0.88) 0%, rgba(4,14,8,0.3) 50%, transparent 100%)"
                   }} />
 
                   {/* Badge */}
                   {s.badge && (
-                    <span className="absolute top-4 left-4 text-[10px] font-bold px-2.5 py-1 rounded-full"
+                    <span className="absolute top-4 left-4 text-[10px] font-bold px-2.5 py-1 rounded-full transition-transform duration-300 group-hover:scale-105"
                       style={{ background: "linear-gradient(135deg,#1A9458,#2EB374)", color: "#fff" }}>
                       {s.badge}
                     </span>
                   )}
 
-                  {/* Arrow chip top right */}
-                  <div className="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                  {/* Arrow chip top right — slides in from right */}
+                  <div className="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center opacity-0 translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300"
                     style={{ backgroundColor: "rgba(255,255,255,0.2)", backdropFilter: "blur(8px)" }}>
                     <ArrowRight className="w-4 h-4 text-white" />
                   </div>
 
-                  {/* Content */}
-                  <div className="absolute bottom-0 left-0 right-0 p-5">
+                  {/* Content — slides up slightly on hover */}
+                  <div className="absolute bottom-0 left-0 right-0 p-5 transition-transform duration-400 group-hover:-translate-y-1">
                     <div className="flex items-end justify-between">
                       <div>
                         <p className="text-xs font-semibold mb-1" style={{ color: "#6EE7B7" }}>
@@ -325,27 +332,42 @@ export default function LandingPage() {
             {HOW_IT_WORKS.map((item, i) => (
               <div key={item.step} className="group relative">
 
-                <div className="rounded-2xl overflow-hidden"
-                  style={{ boxShadow: "0 4px 24px rgba(13,82,48,0.08)", border: "1px solid rgba(46,179,116,0.10)" }}>
+                <div
+                  className="rounded-2xl overflow-hidden transition-all duration-500"
+                  style={{
+                    boxShadow: "0 4px 24px rgba(13,82,48,0.08)",
+                    border: "1px solid rgba(46,179,116,0.10)",
+                    transition: "transform 500ms cubic-bezier(0.34,1.56,0.64,1), box-shadow 400ms ease",
+                  }}
+                  onMouseEnter={e => {
+                    e.currentTarget.style.transform = "translateY(-8px)"
+                    e.currentTarget.style.boxShadow = "0 24px 48px rgba(13,82,48,0.18)"
+                  }}
+                  onMouseLeave={e => {
+                    e.currentTarget.style.transform = "translateY(0)"
+                    e.currentTarget.style.boxShadow = "0 4px 24px rgba(13,82,48,0.08)"
+                  }}
+                >
                   {/* Photo */}
                   <div className="relative h-44 overflow-hidden">
                     <Image
                       src={item.img}
                       alt={item.title}
                       fill
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
                       sizes="(max-width: 768px) 100vw, 33vw"
                     />
-                    <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(4,14,8,0.5) 0%, transparent 60%)" }} />
+                    <div className="absolute inset-0 transition-opacity duration-400 group-hover:opacity-60"
+                      style={{ background: "linear-gradient(to top, rgba(4,14,8,0.5) 0%, transparent 60%)" }} />
                     {/* Step number */}
-                    <div className="absolute top-4 left-4 w-10 h-10 rounded-xl flex items-center justify-center font-bold text-sm"
+                    <div className="absolute top-4 left-4 w-10 h-10 rounded-xl flex items-center justify-center font-bold text-sm transition-transform duration-400 group-hover:scale-110"
                       style={{ background: "linear-gradient(135deg,#0D5230,#2EB374)", color: "#fff", fontFamily: "var(--font-sora)", boxShadow: "0 4px 14px rgba(13,82,48,0.4)" }}>
                       {item.step}
                     </div>
                   </div>
 
                   {/* Text */}
-                  <div className="p-5" style={{ backgroundColor: "#fff" }}>
+                  <div className="p-5 transition-colors duration-300 group-hover:bg-[#F0FAF5]" style={{ backgroundColor: "#fff" }}>
                     <h3 className="font-bold text-base mb-2" style={{ color: "#0D1B12", fontFamily: "var(--font-sora)" }}>
                       {item.title}
                     </h3>

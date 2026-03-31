@@ -186,6 +186,24 @@ export default function WorkerAuthPage() {
                   Sign in as customer
                 </Link>
               </p>
+
+              <div className="relative my-6">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t" style={{ borderColor: "var(--color-neutral-200)" }} />
+                </div>
+                <div className="relative flex justify-center text-xs" style={{ color: "var(--color-text-secondary)" }}>
+                  <span className="px-3" style={{ backgroundColor: "var(--color-neutral-50)" }}>or</span>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => router.push("/worker/onboarding")}
+                className="w-full text-sm font-semibold py-2.5 rounded-xl border-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2EB374]"
+                style={{ borderColor: "var(--color-neutral-300)", color: "var(--color-text-secondary)" }}
+              >
+                Skip — Try Demo
+              </button>
             </form>
           ) : (
             <form onSubmit={handleVerifyOtp} noValidate>

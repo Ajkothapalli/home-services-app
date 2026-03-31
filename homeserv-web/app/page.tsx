@@ -322,11 +322,6 @@ export default function LandingPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-10">
             {HOW_IT_WORKS.map((item, i) => (
               <div key={item.step} className="group relative">
-                {/* Connector line between cards */}
-                {i < 2 && (
-                  <div className="hidden md:block absolute top-24 left-[calc(100%+8px)] w-[calc(100%-16px)] h-px z-10"
-                    style={{ background: "linear-gradient(90deg, #2EB374, #9FE3BF)" }} />
-                )}
 
                 <div className="rounded-2xl overflow-hidden"
                   style={{ boxShadow: "0 4px 24px rgba(13,82,48,0.08)", border: "1px solid rgba(46,179,116,0.10)" }}>

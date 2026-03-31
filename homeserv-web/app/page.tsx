@@ -32,7 +32,7 @@ export default function LandingPage() {
     <div className="min-h-screen flex flex-col">
       {/* ── Navbar ──────────────────────────────────────────────────────── */}
       <header
-        className="sticky top-0 z-50 flex items-center justify-between px-6 py-4"
+        className="sticky top-0 z-50 flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4"
         style={{
           backgroundColor: "rgba(255,255,255,0.92)",
           backdropFilter: "blur(12px)",
@@ -44,13 +44,16 @@ export default function LandingPage() {
             style={{ background: "linear-gradient(135deg, #0D5230, #2EB374)" }}>
             <span className="text-white font-bold text-xs">HS</span>
           </div>
-          <span className="font-bold text-lg" style={{ color: "var(--color-text-primary)", fontFamily: "var(--font-sora)" }}>
+          <span className="font-bold text-base sm:text-lg" style={{ color: "var(--color-text-primary)", fontFamily: "var(--font-sora)" }}>
             HomeServ
           </span>
         </div>
-        <div className="flex items-center gap-3">
-          <Link href="/auth/worker">
+        <div className="flex items-center gap-2 sm:gap-3">
+          <Link href="/auth/worker" className="hidden sm:block">
             <Button variant="ghost" size="sm">Join as Pro</Button>
+          </Link>
+          <Link href="/auth/worker" className="sm:hidden">
+            <Button variant="ghost" size="sm">Pro</Button>
           </Link>
           <Link href="/auth/customer">
             <Button variant="primary" size="sm">Book Now</Button>
@@ -60,7 +63,7 @@ export default function LandingPage() {
 
       {/* ── Hero ────────────────────────────────────────────────────────── */}
       <section
-        className="relative flex flex-col items-center text-center px-6 pt-20 pb-24 overflow-hidden"
+        className="relative flex flex-col items-center text-center px-5 sm:px-6 pt-12 sm:pt-20 pb-16 sm:pb-24 overflow-hidden"
         style={{ background: "linear-gradient(160deg, #EDFAF2 0%, #D0F2DF 35%, #9FE3BF 65%, #EDFAF2 100%)" }}
       >
         <div className="absolute top-0 left-0 w-72 h-72 rounded-full opacity-20 pointer-events-none"
@@ -76,7 +79,7 @@ export default function LandingPage() {
         </span>
 
         <h1
-          className="text-4xl md:text-6xl font-bold leading-tight mb-6 max-w-3xl"
+          className="text-3xl sm:text-4xl md:text-6xl font-bold leading-tight mb-5 sm:mb-6 max-w-3xl"
           style={{ color: "var(--color-brand-900)", fontFamily: "var(--font-sora)" }}
         >
           Home repairs,<br />
@@ -85,7 +88,7 @@ export default function LandingPage() {
           </span>
         </h1>
 
-        <p className="text-lg md:text-xl mb-10 max-w-xl" style={{ color: "var(--color-neutral-700)" }}>
+        <p className="text-base sm:text-lg md:text-xl mb-8 sm:mb-10 max-w-xl" style={{ color: "var(--color-neutral-700)" }}>
           Seepage repair, tiling, grouting, and welding — booked in under 2 minutes with verified professionals.
         </p>
 
@@ -115,7 +118,7 @@ export default function LandingPage() {
       </section>
 
       {/* ── Services ────────────────────────────────────────────────────── */}
-      <section className="px-6 py-16 max-w-6xl mx-auto w-full">
+      <section className="px-4 sm:px-6 py-10 sm:py-16 max-w-6xl mx-auto w-full">
         <div className="text-center mb-10">
           <h2 className="text-3xl font-bold mb-3" style={{ color: "var(--color-text-primary)", fontFamily: "var(--font-sora)" }}>
             Our Services
@@ -166,7 +169,7 @@ export default function LandingPage() {
       </section>
 
       {/* ── How it works ────────────────────────────────────────────────── */}
-      <section className="px-6 py-16"
+      <section className="px-4 sm:px-6 py-10 sm:py-16"
         style={{ backgroundColor: "var(--color-neutral-50)", borderTop: "1px solid var(--color-border-default)" }}>
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
@@ -193,9 +196,9 @@ export default function LandingPage() {
       </section>
 
       {/* ── CTA banner ─────────────────────────────────────────────────── */}
-      <section className="px-6 py-14">
+      <section className="px-4 sm:px-6 py-10 sm:py-14">
         <div
-          className="max-w-3xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 px-8 py-8 rounded-[var(--radius-2xl)]"
+          className="max-w-3xl mx-auto flex flex-col md:flex-row items-center justify-between gap-5 px-6 sm:px-8 py-6 sm:py-8 rounded-[var(--radius-2xl)]"
           style={{ background: "linear-gradient(135deg, #0D5230, #1A9458, #2EB374)", boxShadow: "0 8px 32px rgba(26,148,88,0.3)" }}
         >
           <div>

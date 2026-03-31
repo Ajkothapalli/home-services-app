@@ -23,8 +23,8 @@ export default function WorkerProfile() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8">
-      <h1 className="text-2xl font-bold mb-8" style={{ color: "var(--color-text-primary)", fontFamily: "var(--font-sora)" }}>
+    <div className="max-w-2xl mx-auto px-4 sm:px-6 py-4 lg:py-8">
+      <h1 className="hidden lg:block text-2xl font-bold mb-8" style={{ color: "var(--color-text-primary)", fontFamily: "var(--font-sora)" }}>
         My Profile
       </h1>
 

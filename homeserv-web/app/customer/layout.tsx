@@ -16,7 +16,7 @@ const NAV = [
 
 function getPageMeta(pathname: string): { title: string; back: boolean } {
   if (pathname.startsWith("/customer/bookings/")) return { title: "Booking Details", back: true }
-  if (pathname.startsWith("/customer/services/") && pathname.includes("/book")) return { title: "Book Service", back: true }
+  if (pathname.startsWith("/customer/book/"))     return { title: "Book Service",    back: true }
   if (pathname.startsWith("/customer/services/")) return { title: "Service Details", back: true }
   if (pathname === "/customer/dashboard") return { title: "Home", back: false }
   if (pathname === "/customer/services")  return { title: "Services",    back: false }

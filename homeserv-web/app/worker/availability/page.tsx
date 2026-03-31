@@ -20,8 +20,8 @@ export default function WorkerAvailabilityPage() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8">
-      <div className="mb-6">
+    <div className="max-w-2xl mx-auto px-4 sm:px-6 py-4 lg:py-8">
+      <div className="hidden lg:block mb-6">
         <h1 className="text-2xl font-bold mb-1" style={{ color: "var(--color-text-primary)", fontFamily: "var(--font-sora)" }}>
           Manage Availability
         </h1>

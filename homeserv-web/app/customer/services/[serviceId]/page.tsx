@@ -39,11 +39,11 @@ export default function ServiceDetailPage() {
   const eligibleWorkers = WORKERS.filter((w) => (w.skills as readonly string[]).includes(service.id))
 
   return (
-    <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
-      {/* Back */}
+    <div className="max-w-3xl mx-auto px-4 sm:px-6 py-4 lg:py-8">
+      {/* Back — desktop only */}
       <Link
         href="/customer/services"
-        className="inline-flex items-center gap-1 text-sm font-semibold mb-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2EB374] rounded"
+        className="hidden lg:inline-flex items-center gap-1 text-sm font-semibold mb-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2EB374] rounded"
         style={{ color: "var(--color-brand-600)" }}
       >
         <ChevronLeft className="w-4 h-4" /> All Services
@@ -51,7 +51,7 @@ export default function ServiceDetailPage() {
 
       {/* Hero card */}
       <div
-        className="relative p-8 mb-6"
+        className="relative p-5 sm:p-8 mb-6"
         style={{
           background: "linear-gradient(135deg, #EDFAF2 0%, #D0F2DF 50%, #9FE3BF 100%)",
           borderRadius: "var(--radius-2xl)",
@@ -69,7 +69,7 @@ export default function ServiceDetailPage() {
         >
           {ICON_MAP[service.icon]}
         </div>
-        <h1 className="text-3xl font-bold mb-2" style={{ color: "var(--color-brand-900)", fontFamily: "var(--font-sora)" }}>
+        <h1 className="text-2xl sm:text-3xl font-bold mb-2" style={{ color: "var(--color-brand-900)", fontFamily: "var(--font-sora)" }}>
           {service.name}
         </h1>
         <p className="text-base mb-5" style={{ color: "var(--color-brand-800)" }}>{service.description}</p>

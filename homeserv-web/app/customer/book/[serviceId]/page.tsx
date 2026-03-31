@@ -132,18 +132,18 @@ export default function BookingWizard() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8">
-      {/* Back link */}
+    <div className="max-w-2xl mx-auto px-4 sm:px-6 py-4 lg:py-8">
+      {/* Back link — desktop only */}
       <Link
         href={`/customer/services/${serviceId}`}
-        className="inline-flex items-center gap-1 text-sm font-semibold mb-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2EB374] rounded"
+        className="hidden lg:inline-flex items-center gap-1 text-sm font-semibold mb-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2EB374] rounded"
         style={{ color: "var(--color-brand-600)" }}
       >
         <ChevronLeft className="w-4 h-4" /> {service.name}
       </Link>
 
       {/* Step progress */}
-      <div className="mb-8">
+      <div className="mb-6 lg:mb-8">
         <StepProgress steps={steps} orientation="horizontal" />
       </div>
 

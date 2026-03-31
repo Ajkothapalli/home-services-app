@@ -251,8 +251,9 @@ export default function LandingPage() {
                 href="/auth/customer"
                 className={`group block ${isWide ? "sm:col-span-2 lg:col-span-1" : ""}`}
               >
+                {/* Outer card — handles lift + shadow, no overflow-hidden */}
                 <div
-                  className="relative overflow-hidden rounded-2xl h-64 sm:h-72 cursor-pointer"
+                  className="relative rounded-2xl cursor-pointer h-64 sm:h-72"
                   style={{
                     boxShadow: "0 4px 24px rgba(0,0,0,0.10)",
                     transition: "transform 600ms cubic-bezier(0.25,0.46,0.45,0.94), box-shadow 600ms cubic-bezier(0.25,0.46,0.45,0.94)",
@@ -266,35 +267,38 @@ export default function LandingPage() {
                     e.currentTarget.style.boxShadow = "0 4px 24px rgba(0,0,0,0.10)"
                   }}
                 >
-                  <Image
-                    src={img}
-                    alt={s.name}
-                    fill
-                    className="object-cover group-hover:scale-110"
-                    style={{ transition: "transform 600ms cubic-bezier(0.25,0.46,0.45,0.94)", willChange: "transform" }}
-                    sizes="(max-width: 640px) 100vw, 50vw"
-                  />
-                  {/* Dark gradient from bottom — lightens slightly on hover */}
-                  <div className="absolute inset-0 transition-opacity duration-400 group-hover:opacity-80" style={{
-                    background: "linear-gradient(to top, rgba(4,14,8,0.88) 0%, rgba(4,14,8,0.3) 50%, transparent 100%)"
-                  }} />
+                  {/* Inner image container — clips the zoom */}
+                  <div className="absolute inset-0 overflow-hidden rounded-2xl">
+                    <Image
+                      src={img}
+                      alt={s.name}
+                      fill
+                      className="object-cover group-hover:scale-110"
+                      style={{ transition: "transform 600ms cubic-bezier(0.25,0.46,0.45,0.94)", willChange: "transform" }}
+                      sizes="(max-width: 640px) 100vw, 50vw"
+                    />
+                    {/* Dark gradient from bottom */}
+                    <div className="absolute inset-0" style={{
+                      background: "linear-gradient(to top, rgba(4,14,8,0.88) 0%, rgba(4,14,8,0.3) 50%, transparent 100%)"
+                    }} />
+                  </div>
 
                   {/* Badge */}
                   {s.badge && (
-                    <span className="absolute top-4 left-4 text-[10px] font-bold px-2.5 py-1 rounded-full transition-transform duration-300 group-hover:scale-105"
+                    <span className="absolute top-4 left-4 z-10 text-[10px] font-bold px-2.5 py-1 rounded-full"
                       style={{ background: "linear-gradient(135deg,#1A9458,#2EB374)", color: "#fff" }}>
                       {s.badge}
                     </span>
                   )}
 
                   {/* Arrow chip top right — slides in from right */}
-                  <div className="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center opacity-0 translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300"
+                  <div className="absolute top-4 right-4 z-10 w-8 h-8 rounded-full flex items-center justify-center opacity-0 translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300"
                     style={{ backgroundColor: "rgba(255,255,255,0.2)", backdropFilter: "blur(8px)" }}>
                     <ArrowRight className="w-4 h-4 text-white" />
                   </div>
 
-                  {/* Content — slides up slightly on hover */}
-                  <div className="absolute bottom-0 left-0 right-0 p-5 transition-transform duration-400 group-hover:-translate-y-1">
+                  {/* Content */}
+                  <div className="absolute bottom-0 left-0 right-0 z-10 p-5">
                     <div className="flex items-end justify-between">
                       <div>
                         <p className="text-xs font-semibold mb-1" style={{ color: "#6EE7B7" }}>

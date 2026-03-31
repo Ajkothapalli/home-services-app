@@ -2,9 +2,109 @@
 
 import * as React from "react"
 import Link from "next/link"
-import { ArrowRight, CalendarDays, Clock, Bell, ChevronRight } from "lucide-react"
+import { ArrowRight, CalendarDays, Clock, Bell, ChevronRight, Play } from "lucide-react"
 import { Button, Badge } from "@/design-system"
 import { SERVICES, MOCK_BOOKINGS, WORKERS } from "@/lib/mock-data"
+
+// ── Seepage video card ────────────────────────────────────────────────────────
+// Drop your video at /public/videos/seepage-repair.mp4
+// Drop the thumbnail image at /public/images/seepage-thumb.jpg
+
+function SeepageVideoCard({ serviceId, priceFrom }: { serviceId: string; priceFrom: number }) {
+  const videoRef = React.useRef<HTMLVideoElement>(null)
+  const [hovered, setHovered] = React.useState(false)
+
+  function onEnter() {
+    setHovered(true)
+    videoRef.current?.play()
+  }
+
+  function onLeave() {
+    setHovered(false)
+    const v = videoRef.current
+    if (v) { v.pause(); v.currentTime = 0 }
+  }
+
+  return (
+    <Link href={`/customer/services/${serviceId}`} className="block">
+      <div
+        onMouseEnter={onEnter}
+        onMouseLeave={onLeave}
+        onFocus={onEnter}
+        onBlur={onLeave}
+        className="rounded-xl overflow-visible cursor-pointer"
+        style={{
+          boxShadow: hovered
+            ? "0 20px 48px rgba(13,82,48,0.22), 0 4px 16px rgba(13,82,48,0.12)"
+            : "0 4px 18px rgba(13,82,48,0.10)",
+          border: "1px solid rgba(46,179,116,0.14)",
+          transform: hovered ? "scale(1.06)" : "scale(1)",
+          transition: "transform 280ms cubic-bezier(0.34,1.56,0.64,1), box-shadow 280ms ease",
+          position: "relative",
+          zIndex: hovered ? 10 : 1,
+        }}
+      >
+        {/* Video / thumbnail area */}
+        <div className="relative overflow-hidden rounded-t-xl" style={{ height: 140, backgroundColor: "#0a1a0f" }}>
+          {/* Poster shown until video plays */}
+          {!hovered && (
+            <img
+              src="/images/seepage-thumb.jpg"
+              alt="Seepage Repair"
+              className="w-full h-full object-cover"
+              style={{ position: "absolute", inset: 0 }}
+            />
+          )}
+
+          <video
+            ref={videoRef}
+            src="/videos/seepage-repair.mp4"
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            className="w-full h-full object-cover"
+            style={{
+              opacity: hovered ? 1 : 0,
+              transition: "opacity 200ms ease",
+            }}
+          />
+
+          {/* Play hint badge — visible at rest */}
+          {!hovered && (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-full flex items-center justify-center"
+                style={{ backgroundColor: "rgba(0,0,0,0.45)", backdropFilter: "blur(4px)" }}>
+                <Play className="w-4 h-4 text-white ml-0.5" />
+              </div>
+            </div>
+          )}
+
+          {/* "Watch" label fades in on hover */}
+          <div
+            className="absolute top-2.5 left-2.5 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full"
+            style={{
+              backgroundColor: "rgba(0,0,0,0.5)",
+              color: "#6EE7B7",
+              opacity: hovered ? 1 : 0,
+              transition: "opacity 200ms ease",
+            }}
+          >
+            Playing
+          </div>
+        </div>
+
+        {/* Label area */}
+        <div className="px-4 py-3 rounded-b-xl" style={{ backgroundColor: "var(--color-neutral-0)" }}>
+          <p className="text-sm font-bold" style={{ color: "var(--color-text-primary)" }}>Seepage Repair</p>
+          <p className="text-xs mt-0.5 font-semibold" style={{ color: "#0284C7" }}>
+            from ₹{priceFrom.toLocaleString("en-IN")}
+          </p>
+        </div>
+      </div>
+    </Link>
+  )
+}
 
 // ── Service illustrations ─────────────────────────────────────────────────────
 
@@ -324,8 +424,17 @@ export default function CustomerDashboard() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3" style={{ overflow: "visible" }}>
           {SERVICES.map((s) => {
+            // Seepage gets the video card treatment
+            if (s.id === "seepage-repair") {
+              return (
+                <div key={s.id} style={{ overflow: "visible" }}>
+                  <SeepageVideoCard serviceId={s.id} priceFrom={s.priceFrom} />
+                </div>
+              )
+            }
+
             const illus = SERVICE_ILLUSTRATIONS[s.id] ?? FALLBACK_ILLUSTRATION
             return (
               <Link key={s.id} href={`/customer/services/${s.id}`} className="block group">
@@ -336,14 +445,11 @@ export default function CustomerDashboard() {
                     border: "1px solid rgba(46,179,116,0.14)",
                   }}
                 >
-                  {/* Illustration area */}
                   <div className="relative flex items-center justify-center px-4 pt-5 pb-2" style={{ background: illus.bg, height: 140 }}>
                     <div className="w-full h-full">
                       {illus.component}
                     </div>
                   </div>
-
-                  {/* Label area */}
                   <div className="px-4 py-3" style={{ backgroundColor: "var(--color-neutral-0)" }}>
                     <p className="text-sm font-bold" style={{ color: "var(--color-text-primary)" }}>{s.name}</p>
                     <p className="text-xs mt-0.5 font-semibold" style={{ color: illus.accent }}>

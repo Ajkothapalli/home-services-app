@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import Link from "next/link"
-import { ArrowRight, CalendarDays, Clock, Bell, ChevronRight, Play } from "lucide-react"
+import { ArrowRight, CalendarDays, Clock, Bell, ChevronRight } from "lucide-react"
 import { Button, Badge } from "@/design-system"
 import { SERVICES, MOCK_BOOKINGS, WORKERS } from "@/lib/mock-data"
 
@@ -69,16 +69,6 @@ function SeepageVideoCard({ serviceId, priceFrom }: { serviceId: string; priceFr
               transition: "opacity 200ms ease",
             }}
           />
-
-          {/* Play hint badge — visible at rest */}
-          {!hovered && (
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-10 h-10 rounded-full flex items-center justify-center"
-                style={{ backgroundColor: "rgba(0,0,0,0.45)", backdropFilter: "blur(4px)" }}>
-                <Play className="w-4 h-4 text-white ml-0.5" />
-              </div>
-            </div>
-          )}
 
           {/* "Watch" label fades in on hover */}
           <div

@@ -20,8 +20,8 @@ export default function PaymentsPage() {
   const total = payments.filter((p) => p.status === "paid").reduce((a, p) => a + p.amount, 0)
 
   return (
-    <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
-      <h1 className="text-2xl font-bold mb-2" style={{ color: "var(--color-text-primary)", fontFamily: "var(--font-sora)" }}>
+    <div className="max-w-3xl mx-auto px-4 sm:px-6 py-4 lg:py-8">
+      <h1 className="hidden lg:block text-2xl font-bold mb-2" style={{ color: "var(--color-text-primary)", fontFamily: "var(--font-sora)" }}>
         Payments
       </h1>
       <p className="text-sm mb-8" style={{ color: "var(--color-text-secondary)" }}>All your transactions in one place</p>

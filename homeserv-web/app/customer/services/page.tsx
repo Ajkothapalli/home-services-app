@@ -23,9 +23,9 @@ export default function ServicesPage() {
   )
 
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
-      {/* Header */}
-      <div className="mb-6">
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4 lg:py-8">
+      {/* Header — desktop only */}
+      <div className="hidden lg:block mb-6">
         <h1 className="text-2xl font-bold mb-1" style={{ color: "var(--color-text-primary)", fontFamily: "var(--font-sora)" }}>
           Services
         </h1>
@@ -52,7 +52,7 @@ export default function ServicesPage() {
           <p className="text-sm" style={{ color: "var(--color-text-secondary)" }}>Try a different search term</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
           {filtered.map((s) => (
             <Link key={s.id} href={`/customer/services/${s.id}`} className="group block">
               <div

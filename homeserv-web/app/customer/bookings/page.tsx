@@ -39,8 +39,8 @@ export default function BookingsPage() {
   const filtered = [...MOCK_BOOKINGS].filter((b) => TAB_STATUSES[tab].includes(b.status))
 
   return (
-    <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
-      <h1 className="text-2xl font-bold mb-6" style={{ color: "var(--color-text-primary)", fontFamily: "var(--font-sora)" }}>
+    <div className="max-w-3xl mx-auto px-4 sm:px-6 py-4 lg:py-8">
+      <h1 className="hidden lg:block text-2xl font-bold mb-6" style={{ color: "var(--color-text-primary)", fontFamily: "var(--font-sora)" }}>
         My Bookings
       </h1>
 

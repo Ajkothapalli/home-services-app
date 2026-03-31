@@ -223,8 +223,8 @@ export default function CustomerDashboard() {
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 pb-12">
 
-      {/* ── Header ──────────────────────────────────────────────────────────── */}
-      <div className="flex items-center justify-between pt-8 pb-6">
+      {/* ── Header (desktop only — mobile uses layout sticky header) ────────── */}
+      <div className="hidden lg:flex items-center justify-between pt-8 pb-6">
         <div>
           <p className="text-sm mb-0.5" style={{ color: "var(--color-text-secondary)" }}>
             {getGreeting()},
@@ -249,6 +249,9 @@ export default function CustomerDashboard() {
           </Link>
         </div>
       </div>
+
+      {/* Mobile top spacing */}
+      <div className="lg:hidden pt-4" />
 
       {/* ── Active booking banner ────────────────────────────────────────────── */}
       {activeBooking && (() => {
@@ -321,7 +324,7 @@ export default function CustomerDashboard() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
           {SERVICES.map((s) => {
             const illus = SERVICE_ILLUSTRATIONS[s.id] ?? FALLBACK_ILLUSTRATION
             return (

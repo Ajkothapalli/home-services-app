@@ -25,9 +25,9 @@ export default function WorkerDashboard() {
   const thisMonthEarned = MOCK_EARNINGS.filter((e) => e.date.includes("Apr")).reduce((a, e) => a + e.amount, 0)
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8 space-y-8">
-      {/* Header */}
-      <div className="flex items-center justify-between">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 lg:py-8 space-y-6 lg:space-y-8">
+      {/* Header — desktop only */}
+      <div className="hidden lg:flex items-center justify-between">
         <div className="flex items-center gap-4">
           <Avatar name={worker.name} size="lg" status="online" />
           <div>

@@ -34,8 +34,8 @@ export default function WorkerEarningsPage() {
   }
 
   return (
-    <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 space-y-8">
-      <h1 className="text-2xl font-bold" style={{ color: "var(--color-text-primary)", fontFamily: "var(--font-sora)" }}>
+    <div className="max-w-3xl mx-auto px-4 sm:px-6 py-4 lg:py-8 space-y-6 lg:space-y-8">
+      <h1 className="hidden lg:block text-2xl font-bold" style={{ color: "var(--color-text-primary)", fontFamily: "var(--font-sora)" }}>
         Earnings
       </h1>
 

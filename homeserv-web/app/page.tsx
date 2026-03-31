@@ -215,7 +215,7 @@ export default function LandingPage() {
 
       {/* ── Stats bar (mobile) ───────────────────────────────────────────── */}
       <div className="lg:hidden grid grid-cols-4 divide-x"
-        style={{ backgroundColor: "#052E16", divideColor: "rgba(255,255,255,0.08)" }}>
+        style={{ backgroundColor: "#052E16" }}>
         {STATS.map((s) => (
           <div key={s.label} className="flex flex-col items-center py-4 px-2 text-center">
             <p className="text-lg font-bold text-white" style={{ fontFamily: "var(--font-sora)" }}>{s.value}</p>

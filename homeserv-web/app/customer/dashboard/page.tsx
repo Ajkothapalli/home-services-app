@@ -417,7 +417,7 @@ export default function CustomerDashboard() {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3" style={{ overflow: "visible" }}>
           {SERVICES.map((s) => {
             // Seepage gets the video card treatment
-            if (s.id === "seepage-repair") {
+            if (s.id === "seepage") {
               return (
                 <div key={s.id} style={{ overflow: "visible" }}>
                   <SeepageVideoCard serviceId={s.id} priceFrom={s.priceFrom} />

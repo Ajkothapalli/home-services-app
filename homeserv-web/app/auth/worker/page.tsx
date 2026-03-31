@@ -3,9 +3,8 @@
 import * as React from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { Phone, ArrowRight, ChevronLeft, IndianRupee, Star, Clock } from "lucide-react"
+import { Phone, ArrowRight, ChevronLeft, IndianRupee, Star, Clock, RotateCcw, Shield } from "lucide-react"
 import { Button, Input, useToast } from "@/design-system"
-import { mockDelay } from "@/lib/utils"
 
 type Step = "phone" | "otp"
 
@@ -16,39 +15,93 @@ export default function WorkerAuthPage() {
   const [loading, setLoading]   = React.useState(false)
   const [phoneErr, setPhoneErr] = React.useState("")
   const [otpErr, setOtpErr]     = React.useState("")
+  const [resendCooldown, setResendCooldown] = React.useState(0)
+  const timerRef = React.useRef<ReturnType<typeof setInterval> | null>(null)
+
   const router = useRouter()
   const toast  = useToast()
 
-  async function handleSendOtp(e: React.FormEvent) {
-    e.preventDefault()
-    if (phone.replace(/\D/g, "").length < 10) {
+  const normalizedPhone = phone.replace(/\D/g, "").replace(/^91/, "").slice(-10)
+
+  function startResendTimer() {
+    setResendCooldown(30)
+    timerRef.current = setInterval(() => {
+      setResendCooldown((c) => {
+        if (c <= 1) { clearInterval(timerRef.current!); return 0 }
+        return c - 1
+      })
+    }, 1000)
+  }
+
+  React.useEffect(() => () => { if (timerRef.current) clearInterval(timerRef.current) }, [])
+
+  async function sendOtp() {
+    if (normalizedPhone.length < 10) {
       setPhoneErr("Enter a valid 10-digit mobile number")
-      return
+      return false
     }
     setPhoneErr("")
     setLoading(true)
-    await mockDelay(1000)
+
+    const res  = await fetch("/api/auth/send-otp", {
+      method:  "POST",
+      headers: { "Content-Type": "application/json" },
+      body:    JSON.stringify({ phone: normalizedPhone }),
+    })
+    const data = await res.json()
     setLoading(false)
-    toast.success("OTP sent to " + phone)
-    setStep("otp")
+
+    if (!res.ok) {
+      setPhoneErr(data.error ?? "Failed to send OTP. Try again.")
+      return false
+    }
+
+    if (data.dev) {
+      toast.info("DEV MODE: OTP printed in terminal / server console")
+    } else {
+      toast.success(`OTP sent to +91 ${normalizedPhone}`)
+    }
+    startResendTimer()
+    return true
+  }
+
+  async function handleSendOtp(e: React.FormEvent) {
+    e.preventDefault()
+    const ok = await sendOtp()
+    if (ok) setStep("otp")
+  }
+
+  async function handleResend() {
+    setOtp("")
+    setOtpErr("")
+    await sendOtp()
   }
 
   async function handleVerifyOtp(e: React.FormEvent) {
     e.preventDefault()
-    if (otp.length < 4) {
-      setOtpErr("Enter the OTP")
-      return
-    }
+    if (otp.length < 4) { setOtpErr("Enter the OTP sent to your phone"); return }
     setOtpErr("")
     setLoading(true)
-    await mockDelay(1000)
+
+    const res  = await fetch("/api/auth/verify-otp", {
+      method:  "POST",
+      headers: { "Content-Type": "application/json" },
+      body:    JSON.stringify({ phone: normalizedPhone, otp }),
+    })
+    const data = await res.json()
     setLoading(false)
+
+    if (!res.ok) {
+      setOtpErr(data.error ?? "Verification failed. Try again.")
+      return
+    }
+
     router.push("/worker/onboarding")
   }
 
   return (
     <div className="min-h-screen flex flex-col lg:flex-row">
-      {/* ── Left panel ─────────────────────────────────────────────────── */}
+      {/* ── Left panel ─────────────────────────────────────────────── */}
       <div
         className="hidden lg:flex flex-col justify-between px-12 py-12 lg:w-[420px] shrink-0"
         style={{ background: "linear-gradient(160deg, #031B0F 0%, #07361F 50%, #13723F 100%)" }}
@@ -67,7 +120,6 @@ export default function WorkerAuthPage() {
           <p style={{ color: "#9FE3BF" }} className="text-base leading-relaxed">
             Join 500+ verified professionals already earning on HomeServ.
           </p>
-
           <div className="mt-8 space-y-4">
             {[
               { icon: <IndianRupee className="w-4 h-4" />, label: "Weekly payouts to your bank" },
@@ -82,15 +134,13 @@ export default function WorkerAuthPage() {
           </div>
         </div>
 
-        <p className="text-xs" style={{ color: "#5DCB96" }}>
-          Already a pro?{" "}
-          <Link href="/worker/dashboard" className="underline font-semibold" style={{ color: "#9FE3BF" }}>
-            Go to dashboard
-          </Link>
-        </p>
+        <div className="flex items-center gap-2 text-xs" style={{ color: "#5DCB96" }}>
+          <Shield className="w-4 h-4" />
+          Your data is safe. We never share it.
+        </div>
       </div>
 
-      {/* ── Right: form ─────────────────────────────────────────────────── */}
+      {/* ── Right form panel ─────────────────────────────────────────── */}
       <div className="flex-1 flex items-center justify-center p-6 lg:p-12"
         style={{ backgroundColor: "var(--color-neutral-50)" }}>
         <div className="w-full max-w-sm">
@@ -108,24 +158,28 @@ export default function WorkerAuthPage() {
                 Join as Professional
               </h2>
               <p className="text-sm mb-8" style={{ color: "var(--color-text-secondary)" }}>
-                Enter your mobile to create your pro profile
+                Enter your mobile — we&apos;ll send a 6-digit OTP
               </p>
+
               <Input
                 label="Mobile Number"
                 type="tel"
                 inputMode="numeric"
                 placeholder="+91 98765 43210"
                 value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                onChange={(e) => { setPhone(e.target.value); setPhoneErr("") }}
                 prefix={<Phone className="w-4 h-4" />}
                 error={phoneErr}
                 required
                 inputSize="lg"
+                autoComplete="tel"
               />
+
               <Button type="submit" variant="primary" size="lg" fullWidth loading={loading}
                 iconRight={!loading ? <ArrowRight className="w-5 h-5" /> : undefined} className="mt-5">
                 Send OTP
               </Button>
+
               <p className="text-xs text-center mt-6" style={{ color: "var(--color-text-secondary)" }}>
                 Looking to book a service?{" "}
                 <Link href="/auth/customer" className="font-semibold underline" style={{ color: "var(--color-brand-600)" }}>
@@ -135,35 +189,117 @@ export default function WorkerAuthPage() {
             </form>
           ) : (
             <form onSubmit={handleVerifyOtp} noValidate>
-              <button type="button" onClick={() => setStep("phone")}
+              <button type="button"
+                onClick={() => { setStep("phone"); setOtp(""); setOtpErr("") }}
                 className="flex items-center gap-1 text-sm font-semibold mb-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2EB374] rounded"
                 style={{ color: "var(--color-brand-600)" }}>
                 <ChevronLeft className="w-4 h-4" /> Back
               </button>
+
               <h2 className="text-2xl font-bold mb-1" style={{ color: "var(--color-text-primary)", fontFamily: "var(--font-sora)" }}>
-                Verify OTP
+                Enter OTP
               </h2>
-              <p className="text-sm mb-8" style={{ color: "var(--color-text-secondary)" }}>Sent to {phone}</p>
-              <Input
-                label="OTP"
-                type="text"
-                inputMode="numeric"
-                maxLength={6}
-                placeholder="Enter OTP"
-                value={otp}
-                onChange={(e) => setOtp(e.target.value.replace(/\D/g, ""))}
-                error={otpErr}
-                required
-                inputSize="lg"
-                helperText="Enter any digits for demo"
-              />
-              <Button type="submit" variant="primary" size="lg" fullWidth loading={loading} className="mt-5">
+              <p className="text-sm mb-8" style={{ color: "var(--color-text-secondary)" }}>
+                Sent to{" "}
+                <span className="font-semibold" style={{ color: "var(--color-text-primary)" }}>
+                  +91 {normalizedPhone}
+                </span>
+              </p>
+
+              <OtpInput value={otp} onChange={setOtp} />
+
+              {otpErr && (
+                <p className="text-xs mt-2" role="alert" style={{ color: "var(--color-error-600)" }}>
+                  {otpErr}
+                </p>
+              )}
+
+              <Button type="submit" variant="primary" size="lg" fullWidth loading={loading}
+                disabled={otp.length < 6} className="mt-6">
                 Verify & Continue
               </Button>
+
+              <div className="flex items-center justify-center gap-2 mt-4 text-sm" style={{ color: "var(--color-text-secondary)" }}>
+                Didn&apos;t receive it?{" "}
+                {resendCooldown > 0 ? (
+                  <span className="font-semibold" style={{ color: "var(--color-neutral-400)" }}>
+                    Resend in {resendCooldown}s
+                  </span>
+                ) : (
+                  <button type="button" onClick={handleResend} disabled={loading}
+                    className="font-semibold flex items-center gap-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2EB374] rounded"
+                    style={{ color: "var(--color-brand-600)" }}>
+                    <RotateCcw className="w-3 h-3" /> Resend OTP
+                  </button>
+                )}
+              </div>
             </form>
           )}
         </div>
       </div>
+    </div>
+  )
+}
+
+// ── 6-box OTP input ────────────────────────────────────────────────────────
+function OtpInput({ value, onChange }: { value: string; onChange: (v: string) => void }) {
+  const inputRefs = React.useRef<Array<HTMLInputElement | null>>([])
+
+  function handleChange(i: number, char: string) {
+    const digit = char.replace(/\D/g, "").slice(-1)
+    const arr   = value.padEnd(6, " ").split("")
+    arr[i] = digit || " "
+    const next  = arr.join("").trimEnd()
+    onChange(next.replace(/ /g, ""))
+    if (digit && i < 5) inputRefs.current[i + 1]?.focus()
+  }
+
+  function handleKeyDown(i: number, e: React.KeyboardEvent) {
+    if (e.key === "Backspace") {
+      if (!value[i] && i > 0) {
+        inputRefs.current[i - 1]?.focus()
+        const arr = value.split("")
+        arr[i - 1] = ""
+        onChange(arr.join(""))
+      }
+    }
+    if (e.key === "ArrowLeft"  && i > 0) inputRefs.current[i - 1]?.focus()
+    if (e.key === "ArrowRight" && i < 5) inputRefs.current[i + 1]?.focus()
+  }
+
+  function handlePaste(e: React.ClipboardEvent) {
+    e.preventDefault()
+    const pasted = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, 6)
+    onChange(pasted)
+    inputRefs.current[Math.min(pasted.length, 5)]?.focus()
+  }
+
+  return (
+    <div className="flex gap-2" aria-label="OTP input">
+      {Array.from({ length: 6 }).map((_, i) => (
+        <input
+          key={i}
+          ref={(el) => { inputRefs.current[i] = el }}
+          type="text"
+          inputMode="numeric"
+          maxLength={1}
+          value={value[i] ?? ""}
+          onChange={(e) => handleChange(i, e.target.value)}
+          onKeyDown={(e) => handleKeyDown(i, e)}
+          onPaste={handlePaste}
+          onFocus={(e) => e.currentTarget.select()}
+          aria-label={`OTP digit ${i + 1}`}
+          className="w-full aspect-square text-center text-xl font-bold outline-none rounded-lg transition-all"
+          style={{
+            border: `2px solid ${value[i] ? "var(--color-brand-500)" : "var(--color-neutral-300)"}`,
+            color: "var(--color-text-primary)",
+            backgroundColor: "var(--color-neutral-0)",
+            boxShadow: value[i] ? "0 0 0 3px rgba(19,114,63,0.15)" : "none",
+            maxWidth: 48,
+          }}
+          autoComplete={i === 0 ? "one-time-code" : "off"}
+        />
+      ))}
     </div>
   )
 }

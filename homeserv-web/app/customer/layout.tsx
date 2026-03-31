@@ -25,9 +25,9 @@ export default function CustomerLayout({ children }: { children: React.ReactNode
         className="hidden lg:flex flex-col shrink-0 transition-all duration-300 ease-in-out"
         style={{
           width: collapsed ? 72 : 240,
-          backgroundColor: "var(--color-neutral-0)",
-          borderRight: "1.5px solid var(--color-border-default)",
-          boxShadow: "var(--shadow-sm)",
+          background: "linear-gradient(180deg, #F0FAF5 0%, #FFFFFF 30%)",
+          borderRight: "1.5px solid rgba(46,179,116,0.12)",
+          boxShadow: "2px 0 16px rgba(13,82,48,0.06)",
         }}
       >
         {/* Logo */}
@@ -93,7 +93,19 @@ export default function CustomerLayout({ children }: { children: React.ReactNode
       </aside>
 
       {/* ── Main content ─────────────────────────────────────────────────── */}
-      <main className="flex-1 min-w-0 overflow-y-auto pb-20 lg:pb-0">
+      <main
+        className="flex-1 min-w-0 overflow-y-auto pb-20 lg:pb-0"
+        style={{
+          background: `
+            radial-gradient(ellipse at 15% 0%,   rgba(208,242,223,0.55) 0%, transparent 45%),
+            radial-gradient(ellipse at 85% 5%,   rgba(186,230,253,0.30) 0%, transparent 40%),
+            radial-gradient(ellipse at 90% 80%,  rgba(212,242,223,0.40) 0%, transparent 45%),
+            radial-gradient(ellipse at 10% 90%,  rgba(253,230,138,0.18) 0%, transparent 40%),
+            radial-gradient(ellipse at 50% 50%,  rgba(237,250,242,0.60) 0%, transparent 70%),
+            #F4FBF7
+          `,
+        }}
+      >
         {children}
       </main>
 
@@ -102,9 +114,11 @@ export default function CustomerLayout({ children }: { children: React.ReactNode
         className="fixed bottom-0 inset-x-0 lg:hidden z-40 flex"
         aria-label="Customer navigation"
         style={{
-          backgroundColor: "var(--color-neutral-0)",
-          borderTop: "1.5px solid var(--color-border-default)",
-          boxShadow: "0 -4px 16px rgba(0,0,0,0.06)",
+          backgroundColor: "rgba(244,251,247,0.85)",
+          backdropFilter: "blur(16px)",
+          WebkitBackdropFilter: "blur(16px)",
+          borderTop: "1px solid rgba(46,179,116,0.15)",
+          boxShadow: "0 -4px 24px rgba(13,82,48,0.08)",
         }}
       >
         {NAV.map(({ href, label, icon: Icon }) => {

@@ -54,7 +54,7 @@ function SeepageVideoCard({ serviceId, priceFrom }: { serviceId: string; priceFr
   )
 }
 
-// ── Service illustrations ─────────────────────────────────────────────────────
+// ── Service illustrations (unused — kept for reference) ──────────────────────
 function SeepageIllustration() {
   return (
     <svg viewBox="0 0 200 140" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
@@ -146,13 +146,13 @@ function WeldingIllustration() {
   )
 }
 
-const SERVICE_ILLUSTRATIONS: Record<string, { component: React.ReactNode; bg: string; accent: string }> = {
-  "seepage-repair": { component: <SeepageIllustration />, bg: "linear-gradient(145deg,#E0F2FE,#BAE6FD,#7DD3FC)", accent: "#0284C7" },
-  "tiling":         { component: <TilingIllustration />,  bg: "linear-gradient(145deg,#FFFBEB,#FEF3C7,#FDE68A)", accent: "#D97706" },
-  "grouting":       { component: <GroutingIllustration />, bg: "linear-gradient(145deg,#F5F3FF,#EDE9FE,#DDD6FE)", accent: "#7C3AED" },
-  "welding":        { component: <WeldingIllustration />,  bg: "linear-gradient(145deg,#FFF7ED,#FFEDD5,#FED7AA)", accent: "#EA580C" },
+const SERVICE_IMAGES: Record<string, string> = {
+  "seepage":  "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=600&q=80",
+  "tiling":   "https://images.unsplash.com/photo-1615529328331-f8917597711f?w=600&q=80",
+  "grouting": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80",
+  "welding":  "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=600&q=80",
 }
-const FALLBACK_ILLUSTRATION = SERVICE_ILLUSTRATIONS["seepage-repair"]
+const FALLBACK_IMAGE = SERVICE_IMAGES["seepage"]
 
 const STATUS_CONFIG = {
   en_route:    { label: "On the way",  color: "warning" as const },
@@ -237,7 +237,7 @@ export default function CustomerDashboard() {
       {activeBooking && (() => {
         const service = SERVICES.find((s) => s.id === activeBooking.service)
         const worker  = WORKERS.find((w) => w.id === activeBooking.workerId)
-        const illus   = SERVICE_ILLUSTRATIONS[activeBooking.service] ?? FALLBACK_ILLUSTRATION
+        const imgSrc  = SERVICE_IMAGES[activeBooking.service] ?? FALLBACK_IMAGE
         return (
           <Link href={`/customer/bookings/${activeBooking.id}`} className="block mb-7">
             <div className="relative overflow-hidden rounded-2xl px-6 py-5 cursor-pointer"
@@ -245,9 +245,10 @@ export default function CustomerDashboard() {
                 background: "linear-gradient(120deg,#052E16 0%,#065F46 45%,#047857 100%)",
                 boxShadow: "0 10px 36px rgba(4,46,22,0.28)",
               }}>
-              <div className="absolute right-0 top-0 bottom-0 w-36 opacity-20 pointer-events-none">
-                {illus.component}
-              </div>
+              <img src={imgSrc} alt="" aria-hidden="true"
+                className="absolute right-0 top-0 h-full w-40 object-cover opacity-20 pointer-events-none"
+                style={{ maskImage: "linear-gradient(to left, black 0%, transparent 100%)", WebkitMaskImage: "linear-gradient(to left, black 0%, transparent 100%)" }}
+              />
               <div className="relative flex items-center justify-between gap-4">
                 <div>
                   <span className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest mb-2 px-2.5 py-1 rounded-full"
@@ -317,24 +318,30 @@ export default function CustomerDashboard() {
                 </div>
               )
             }
-            const illus = SERVICE_ILLUSTRATIONS[s.id] ?? FALLBACK_ILLUSTRATION
+            const imgSrc = SERVICE_IMAGES[s.id] ?? FALLBACK_IMAGE
             return (
-              <Link key={s.id} href={`/customer/services/${s.id}`} className="block group">
+              <Link key={s.id} href={`/customer/services/${s.id}`} className="block">
                 <div className="relative h-44 rounded-2xl overflow-hidden cursor-pointer"
                   style={{
                     boxShadow: "0 2px 12px rgba(13,82,48,0.10)",
                     transition: "box-shadow 300ms ease",
                   }}
-                  onMouseEnter={e => (e.currentTarget.style.boxShadow = "0 12px 32px rgba(13,82,48,0.18)")}
-                  onMouseLeave={e => (e.currentTarget.style.boxShadow = "0 2px 12px rgba(13,82,48,0.10)")}
+                  onMouseEnter={e => {
+                    e.currentTarget.style.boxShadow = "0 12px 32px rgba(13,82,48,0.18)"
+                    const img = e.currentTarget.querySelector<HTMLImageElement>("img")
+                    if (img) img.style.transform = "scale(1.08)"
+                  }}
+                  onMouseLeave={e => {
+                    e.currentTarget.style.boxShadow = "0 2px 12px rgba(13,82,48,0.10)"
+                    const img = e.currentTarget.querySelector<HTMLImageElement>("img")
+                    if (img) img.style.transform = "scale(1)"
+                  }}
                 >
-                  {/* Full-bleed illustration bg */}
-                  <div className="absolute inset-0 flex items-center justify-center p-4" style={{ background: illus.bg }}>
-                    <div className="w-full h-full">{illus.component}</div>
-                  </div>
-                  {/* Gradient overlay for text legibility */}
-                  <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(15,23,18,0.75) 0%, rgba(15,23,18,0.1) 50%, transparent 100%)" }} />
-                  {/* Text at bottom */}
+                  <img src={imgSrc} alt={s.name}
+                    className="absolute inset-0 w-full h-full object-cover"
+                    style={{ transform: "scale(1)", transition: "transform 600ms cubic-bezier(0.25,0.46,0.45,0.94)", willChange: "transform" }}
+                  />
+                  <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(4,14,8,0.82) 0%, rgba(4,14,8,0.15) 55%, transparent 100%)" }} />
                   <div className="absolute bottom-0 left-0 right-0 px-3.5 pb-3.5">
                     <p className="text-sm font-bold text-white leading-tight">{s.name}</p>
                     <p className="text-xs font-semibold mt-0.5" style={{ color: "#86EFAC" }}>
@@ -373,7 +380,7 @@ export default function CustomerDashboard() {
               const service = SERVICES.find((s) => s.id === b.service)
               const worker  = WORKERS.find((w) => w.id === b.workerId)
               const cfg     = STATUS_CONFIG[b.status]
-              const illus   = SERVICE_ILLUSTRATIONS[b.service] ?? FALLBACK_ILLUSTRATION
+              const imgSrc  = SERVICE_IMAGES[b.service] ?? FALLBACK_IMAGE
               return (
                 <Link key={b.id} href={`/customer/bookings/${b.id}`} className="block group">
                   <div className="flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all"
@@ -392,10 +399,9 @@ export default function CustomerDashboard() {
                       ;(e.currentTarget as HTMLElement).style.borderColor = "rgba(46,179,116,0.12)"
                     }}
                   >
-                    {/* Illustration thumbnail */}
-                    <div className="w-12 h-12 rounded-xl overflow-hidden shrink-0 flex items-center justify-center"
-                      style={{ background: illus.bg }}>
-                      <div className="w-11 h-11 scale-[1.4] origin-center">{illus.component}</div>
+                    {/* Image thumbnail */}
+                    <div className="w-12 h-12 rounded-xl overflow-hidden shrink-0">
+                      <img src={imgSrc} alt="" className="w-full h-full object-cover" />
                     </div>
 
                     <div className="flex-1 min-w-0">

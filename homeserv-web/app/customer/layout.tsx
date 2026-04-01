@@ -48,7 +48,7 @@ export default function CustomerLayout({ children }: { children: React.ReactNode
         {/* Logo */}
         <div className="flex items-center gap-3 px-4 py-5 shrink-0"
           style={{ borderBottom: "1px solid rgba(46,179,116,0.10)" }}>
-          <img src="/images/logo.png" alt="HomeServ" className="w-9 h-9 rounded-xl object-cover shrink-0" aria-hidden="true" />
+          <img src="/images/logo.png" alt="HomeServ" className="w-16 h-16 rounded-xl object-cover shrink-0" aria-hidden="true" />
           {!collapsed && (
             <span className="font-bold text-base truncate" style={{ color: "var(--color-text-primary)", fontFamily: "var(--font-sora)" }}>
               HomeServ
@@ -113,7 +113,7 @@ export default function CustomerLayout({ children }: { children: React.ReactNode
                 <ArrowLeft className="w-5 h-5" />
               </button>
             ) : (
-              <img src="/images/logo.png" alt="HomeServ" className="w-8 h-8 rounded-lg object-cover" />
+              <img src="/images/logo.png" alt="HomeServ" className="w-16 h-16 rounded-xl object-cover" />
             )}
             <span className="font-bold text-base" style={{ color: "var(--color-text-primary)", fontFamily: "var(--font-sora)" }}>
               {meta.title}

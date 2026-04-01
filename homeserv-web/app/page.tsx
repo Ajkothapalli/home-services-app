@@ -95,10 +95,7 @@ export default function LandingPage() {
       >
         <div className="flex items-center gap-6">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center"
-              style={{ background: "linear-gradient(135deg, #0D5230, #2EB374)" }}>
-              <span className="text-white font-bold text-xs">HS</span>
-            </div>
+            <img src="/images/logo.png" alt="HomeServ" className="w-8 h-8 rounded-lg object-cover" />
             <span className="font-bold text-base sm:text-lg" style={{ color: "#0D1B12", fontFamily: "var(--font-sora)" }}>
               HomeServ
             </span>
@@ -504,10 +501,7 @@ export default function LandingPage() {
             {/* Brand */}
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <div className="w-8 h-8 rounded-lg flex items-center justify-center"
-                  style={{ background: "linear-gradient(135deg,#1A9458,#2EB374)" }}>
-                  <span className="text-white font-bold text-xs">HS</span>
-                </div>
+                <img src="/images/logo.png" alt="HomeServ" className="w-8 h-8 rounded-lg object-cover" />
                 <span className="font-bold text-white" style={{ fontFamily: "var(--font-sora)" }}>HomeServ</span>
               </div>
               <p className="text-sm leading-relaxed" style={{ color: "#6B7280" }}>

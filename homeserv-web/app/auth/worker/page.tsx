@@ -107,9 +107,7 @@ export default function WorkerAuthPage() {
         style={{ background: "linear-gradient(160deg, #031B0F 0%, #07361F 50%, #13723F 100%)" }}
       >
         <Link href="/" className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center">
-            <span className="text-white font-bold text-sm">HS</span>
-          </div>
+          <img src="/images/logo.png" alt="HomeServ" className="w-9 h-9 rounded-xl object-cover" />
           <span className="text-white font-bold text-xl" style={{ fontFamily: "var(--font-sora)" }}>HomeServ Pro</span>
         </Link>
 
@@ -145,10 +143,7 @@ export default function WorkerAuthPage() {
         style={{ backgroundColor: "var(--color-neutral-50)" }}>
         <div className="w-full max-w-sm">
           <Link href="/" className="flex items-center gap-2 mb-8 lg:hidden">
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center"
-              style={{ background: "linear-gradient(135deg, #07361F, #1A9458)" }}>
-              <span className="text-white font-bold text-xs">HS</span>
-            </div>
+            <img src="/images/logo.png" alt="HomeServ" className="w-8 h-8 rounded-lg object-cover" />
             <span className="font-bold text-lg" style={{ color: "var(--color-text-primary)", fontFamily: "var(--font-sora)" }}>HomeServ Pro</span>
           </Link>
 

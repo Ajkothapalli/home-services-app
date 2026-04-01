@@ -109,9 +109,7 @@ export default function CustomerAuthPage() {
         style={{ background: "linear-gradient(160deg, #031B0F 0%, #0D5230 50%, #1A9458 100%)" }}
       >
         <Link href="/" className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center">
-            <span className="text-white font-bold text-sm">HS</span>
-          </div>
+          <img src="/images/logo.png" alt="HomeServ" className="w-9 h-9 rounded-xl object-cover" />
           <span className="text-white font-bold text-xl" style={{ fontFamily: "var(--font-sora)" }}>HomeServ</span>
         </Link>
 
@@ -144,10 +142,7 @@ export default function CustomerAuthPage() {
         <div className="w-full max-w-sm">
           {/* Mobile logo */}
           <Link href="/" className="flex items-center gap-2 mb-8 lg:hidden">
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center"
-              style={{ background: "linear-gradient(135deg, #0D5230, #2EB374)" }}>
-              <span className="text-white font-bold text-xs">HS</span>
-            </div>
+            <img src="/images/logo.png" alt="HomeServ" className="w-8 h-8 rounded-lg object-cover" />
             <span className="font-bold text-lg" style={{ color: "var(--color-text-primary)", fontFamily: "var(--font-sora)" }}>
               HomeServ
             </span>

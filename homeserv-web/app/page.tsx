@@ -93,21 +93,23 @@ export default function LandingPage() {
           borderBottom: "1px solid rgba(0,0,0,0.06)",
         }}
       >
-        <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg flex items-center justify-center"
-            style={{ background: "linear-gradient(135deg, #0D5230, #2EB374)" }}>
-            <span className="text-white font-bold text-xs">HS</span>
+        <div className="flex items-center gap-6">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center"
+              style={{ background: "linear-gradient(135deg, #0D5230, #2EB374)" }}>
+              <span className="text-white font-bold text-xs">HS</span>
+            </div>
+            <span className="font-bold text-base sm:text-lg" style={{ color: "#0D1B12", fontFamily: "var(--font-sora)" }}>
+              HomeServ
+            </span>
           </div>
-          <span className="font-bold text-base sm:text-lg" style={{ color: "#0D1B12", fontFamily: "var(--font-sora)" }}>
-            HomeServ
-          </span>
-        </div>
 
-        <nav className="hidden md:flex items-center gap-6 text-sm font-medium" style={{ color: "#4B5563" }}>
-          <a href="#services" className="hover:text-[#1A9458] transition-colors">Services</a>
-          <a href="#how-it-works" className="hover:text-[#1A9458] transition-colors">How it works</a>
-          <a href="#reviews" className="hover:text-[#1A9458] transition-colors">Reviews</a>
-        </nav>
+          <nav className="hidden md:flex items-center gap-6 text-sm font-medium" style={{ color: "#4B5563" }}>
+            <a href="#services" className="hover:text-[#1A9458] transition-colors">Services</a>
+            <a href="#how-it-works" className="hover:text-[#1A9458] transition-colors">How it works</a>
+            <a href="#reviews" className="hover:text-[#1A9458] transition-colors">Reviews</a>
+          </nav>
+        </div>
 
         <div className="flex items-center gap-2 sm:gap-3">
           <Link href="/auth/worker" className="hidden sm:block">

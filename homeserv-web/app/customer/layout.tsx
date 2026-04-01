@@ -98,10 +98,10 @@ export default function CustomerLayout({ children }: { children: React.ReactNode
         <header
           className="lg:hidden sticky top-0 z-30 flex items-center justify-between px-4 h-14 shrink-0"
           style={{
-            backgroundColor: "rgba(255,255,255,0.95)",
+            backgroundColor: "rgba(244,251,247,0.9)",
             backdropFilter: "blur(16px)",
             WebkitBackdropFilter: "blur(16px)",
-            borderBottom: "1px solid rgba(0,0,0,0.06)",
+            borderBottom: "1px solid rgba(46,179,116,0.12)",
           }}
         >
           <div className="flex items-center gap-3">
@@ -134,7 +134,16 @@ export default function CustomerLayout({ children }: { children: React.ReactNode
         {/* ── Main content ──────────────────────────────────────────────── */}
         <main
           className="flex-1 overflow-y-auto pb-20 lg:pb-0"
-          style={{ backgroundColor: "#ffffff" }}
+          style={{
+            background: `
+              radial-gradient(ellipse at 15% 0%,   rgba(208,242,223,0.55) 0%, transparent 45%),
+              radial-gradient(ellipse at 85% 5%,   rgba(186,230,253,0.30) 0%, transparent 40%),
+              radial-gradient(ellipse at 90% 80%,  rgba(212,242,223,0.40) 0%, transparent 45%),
+              radial-gradient(ellipse at 10% 90%,  rgba(253,230,138,0.18) 0%, transparent 40%),
+              radial-gradient(ellipse at 50% 50%,  rgba(237,250,242,0.60) 0%, transparent 70%),
+              #ffffff
+            `,
+          }}
         >
           {children}
         </main>
@@ -144,11 +153,11 @@ export default function CustomerLayout({ children }: { children: React.ReactNode
       <nav className="fixed bottom-0 inset-x-0 lg:hidden z-40 flex"
         aria-label="Customer navigation"
         style={{
-          backgroundColor: "rgba(255,255,255,0.95)",
+          backgroundColor: "rgba(244,251,247,0.88)",
           backdropFilter: "blur(20px)",
           WebkitBackdropFilter: "blur(20px)",
-          borderTop: "1px solid rgba(0,0,0,0.08)",
-          boxShadow: "0 -4px 24px rgba(0,0,0,0.06)",
+          borderTop: "1px solid rgba(46,179,116,0.15)",
+          boxShadow: "0 -4px 24px rgba(13,82,48,0.08)",
         }}
       >
         {NAV.map(({ href, label, icon: Icon }) => {

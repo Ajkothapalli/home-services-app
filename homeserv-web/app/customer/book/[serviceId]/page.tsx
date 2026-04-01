@@ -3,11 +3,11 @@
 import * as React from "react"
 import Link from "next/link"
 import { useParams, useRouter } from "next/navigation"
-import { ArrowRight, ArrowLeft, ChevronLeft, Upload, X, MapPin, Zap, AlertCircle } from "lucide-react"
+import { ArrowRight, ArrowLeft, ChevronLeft, Upload, X, Zap, AlertCircle } from "lucide-react"
 import confetti from "canvas-confetti"
 import {
   Button, Input, StepProgress, CustomerSlotPicker,
-  Rating, Avatar, Badge, useToast,
+  Rating, Avatar, Badge, useToast, AddressAutocomplete,
 } from "@/design-system"
 import {
   SERVICES, WORKERS, generateMockSlots, assignWorker, calcQuote, findNextAvailableSlot,
@@ -289,13 +289,12 @@ export default function BookingWizard() {
           </div>
 
           {/* Address */}
-          <Input
+          <AddressAutocomplete
             label="Service Address"
-            placeholder="12B, Andheri West, Mumbai 400058"
+            placeholder="Search your address…"
             value={address}
-            onChange={(e) => setAddress(e.target.value)}
-            prefix={<MapPin className="w-4 h-4" />}
-            required
+            onChange={setAddress}
+            onSelect={(place) => setAddress(place.shortName || place.displayName)}
           />
 
           <Button

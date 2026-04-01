@@ -63,7 +63,7 @@ export default function CustomerDashboard() {
   const upcomingCount  = MOCK_BOOKINGS.filter((b) => ["confirmed", "assigned", "en_route"].includes(b.status)).length
 
   return (
-    <div className="max-w-4xl mx-auto pb-24" style={{ backgroundColor: "#F0F4F2" }}>
+    <div className="max-w-4xl mx-auto pb-24" style={{ backgroundColor: "#ffffff" }}>
 
       {/* ── Top bar ── */}
       <div className="flex items-center justify-between px-5 sm:px-8 pt-6 pb-5">

@@ -90,29 +90,6 @@ export default function CustomerDashboard() {
         </div>
       </div>
 
-      {/* ── Search bar ── */}
-      <div className="px-5 sm:px-8 mb-5">
-        <Link href="/customer/services">
-          <div
-            className="flex items-center gap-3 px-4 py-3.5 rounded-2xl cursor-pointer"
-            style={{
-              backgroundColor: "white",
-              boxShadow: "0 2px 16px rgba(13,82,48,0.08)",
-              border: "1.5px solid rgba(255,255,255,0.9)",
-              transition: "box-shadow 250ms ease",
-            }}
-            onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 6px 24px rgba(13,82,48,0.14)" }}
-            onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "0 2px 16px rgba(13,82,48,0.08)" }}
-          >
-            <Search className="w-4 h-4 shrink-0" style={{ color: "#2EB374" }} />
-            <span className="text-sm flex-1" style={{ color: "#9CA3AF" }}>What needs fixing today?</span>
-            <span className="text-xs font-bold px-3 py-1.5 rounded-full text-white"
-              style={{ background: "linear-gradient(135deg,#0D5230,#2EB374)" }}>
-              Book Now
-            </span>
-          </div>
-        </Link>
-      </div>
 
       {/* ── Trust strip ── */}
       <div className="px-5 sm:px-8 mb-6">

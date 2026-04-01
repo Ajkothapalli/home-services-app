@@ -2,34 +2,38 @@
 
 import * as React from "react"
 import Link from "next/link"
-import { ArrowRight, IndianRupee, Clock, CheckCircle2, TrendingUp, Droplets, Grid3x3, Layers, Zap, CalendarCheck } from "lucide-react"
+import { ArrowRight, IndianRupee, Clock, CheckCircle2, TrendingUp, CalendarCheck, MapPin, Navigation } from "lucide-react"
 import { Button, Badge, Avatar } from "@/design-system"
 import { MOCK_BOOKINGS, MOCK_EARNINGS, SERVICES, CUSTOMERS, WORKERS } from "@/lib/mock-data"
 import { formatINR } from "@/lib/utils"
 
-const ICON_MAP: Record<string, React.ReactNode> = {
-  droplets:   <Droplets className="w-5 h-5" />,
-  "grid-3x3": <Grid3x3 className="w-5 h-5" />,
-  layers:     <Layers className="w-5 h-5" />,
-  zap:        <Zap className="w-5 h-5" />,
+const SERVICE_IMAGES: Record<string, string> = {
+  "seepage":  "https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=400&q=80",
+  "tiling":   "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=400&q=80",
+  "grouting": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80",
+  "welding":  "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=400&q=80",
 }
 
 export default function WorkerDashboard() {
   const worker = WORKERS[0]
-
-  // Jobs assigned to this worker
   const myJobs = [...MOCK_BOOKINGS].filter((b) => b.workerId === worker.id)
   const activeJob = myJobs.find((b) => b.status === "en_route" || b.status === "in_progress")
 
-  const totalEarned  = MOCK_EARNINGS.reduce((a, e) => a + e.amount, 0)
+  const totalEarned     = MOCK_EARNINGS.reduce((a, e) => a + e.amount, 0)
   const thisMonthEarned = MOCK_EARNINGS.filter((e) => e.date.includes("Apr")).reduce((a, e) => a + e.amount, 0)
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 lg:py-8 space-y-6 lg:space-y-8">
-      {/* Header — desktop only */}
+      {/* Desktop header */}
       <div className="hidden lg:flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <Avatar name={worker.name} size="lg" status="online" />
+          <div className="relative">
+            <div className="w-14 h-14 rounded-full flex items-center justify-center text-xl font-bold text-white"
+              style={{ background: "linear-gradient(135deg, #0D5230, #2EB374)" }}>
+              {worker.name.charAt(0)}
+            </div>
+            <div className="absolute bottom-0 right-0 w-4 h-4 rounded-full bg-green-400 border-2 border-white" />
+          </div>
           <div>
             <p className="text-xs font-medium mb-0.5" style={{ color: "var(--color-text-secondary)" }}>Good morning,</p>
             <h1 className="text-xl font-bold" style={{ color: "var(--color-text-primary)", fontFamily: "var(--font-sora)" }}>
@@ -44,27 +48,49 @@ export default function WorkerDashboard() {
       {activeJob && (() => {
         const service  = SERVICES.find((s) => s.id === activeJob.service)
         const customer = CUSTOMERS.find((c) => c.id === activeJob.customerId)
+        const img      = SERVICE_IMAGES[activeJob.service]
         return (
           <Link href={`/worker/jobs/${activeJob.id}`}>
             <div
-              className="flex items-center justify-between gap-4 px-5 py-4 cursor-pointer transition-all hover:scale-[1.01]"
+              className="relative overflow-hidden cursor-pointer"
               style={{
-                background: "linear-gradient(135deg, #07361F, #1A9458, #2EB374)",
                 borderRadius: "var(--radius-2xl)",
-                boxShadow: "0 8px 28px rgba(26,148,88,0.3)",
+                boxShadow: "0 8px 32px rgba(0,0,0,0.2)",
+                transition: "transform 300ms ease",
               }}
+              onMouseEnter={(e) => { e.currentTarget.style.transform = "scale(1.01)" }}
+              onMouseLeave={(e) => { e.currentTarget.style.transform = "scale(1)" }}
             >
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center text-white">
-                  {ICON_MAP[service?.icon ?? "droplets"]}
+              {img && (
+                <div className="absolute inset-0">
+                  <img src={img} alt={service?.name} className="w-full h-full object-cover" />
+                  <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, rgba(7,54,31,0.92), rgba(26,148,88,0.85))" }} />
                 </div>
-                <div>
-                  <p className="text-xs font-bold text-white/70 uppercase tracking-wider">Active Job</p>
-                  <p className="font-bold text-white">{service?.name}</p>
-                  <p className="text-xs" style={{ color: "#9FE3BF" }}>{customer?.name} · {activeJob.slot.startTime}</p>
+              )}
+              {!img && (
+                <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, #07361F, #1A9458, #2EB374)" }} />
+              )}
+              <div className="relative flex items-center justify-between gap-4 px-5 py-5">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center">
+                    <Navigation className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold text-white/70 uppercase tracking-wider">Active Job</p>
+                    <p className="font-bold text-lg text-white">{service?.name}</p>
+                    <p className="text-sm" style={{ color: "#9FE3BF" }}>{customer?.name} · {activeJob.slot.startTime}</p>
+                    <p className="text-xs mt-0.5 flex items-center gap-1" style={{ color: "rgba(255,255,255,0.7)" }}>
+                      <MapPin className="w-3 h-3" />{activeJob.address}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex flex-col items-center gap-1 shrink-0">
+                  <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
+                    <ArrowRight className="w-5 h-5 text-white" />
+                  </div>
+                  <span className="text-xs text-white/70">View</span>
                 </div>
               </div>
-              <ArrowRight className="w-5 h-5 text-white shrink-0" />
             </div>
           </Link>
         )
@@ -73,20 +99,12 @@ export default function WorkerDashboard() {
       {/* Stats */}
       <div className="grid grid-cols-3 gap-4">
         {[
-          { icon: <IndianRupee className="w-5 h-5" />, label: "Total Earned",  value: formatINR(totalEarned),      color: "var(--color-brand-600)" },
-          { icon: <TrendingUp  className="w-5 h-5" />, label: "This Month",    value: formatINR(thisMonthEarned),  color: "#B45309" },
-          { icon: <CheckCircle2 className="w-5 h-5" />,label: "Jobs Done",     value: String(worker.jobsCompleted), color: "#1D4ED8" },
+          { icon: <IndianRupee className="w-5 h-5" />, label: "Total Earned",  value: formatINR(totalEarned),       color: "var(--color-brand-600)", bg: "linear-gradient(135deg, #EDFAF2, #D0F2DF)" },
+          { icon: <TrendingUp  className="w-5 h-5" />, label: "This Month",    value: formatINR(thisMonthEarned),   color: "#B45309",                 bg: "linear-gradient(135deg, #FFFBEB, #FDE68A)" },
+          { icon: <CheckCircle2 className="w-5 h-5" />,label: "Jobs Done",     value: String(worker.jobsCompleted), color: "#1D4ED8",                 bg: "linear-gradient(135deg, #EFF6FF, #BFDBFE)" },
         ].map((stat) => (
-          <div
-            key={stat.label}
-            className="p-4 text-center"
-            style={{
-              backgroundColor: "var(--color-neutral-0)",
-              border: "1.5px solid var(--color-border-default)",
-              borderRadius: "var(--radius-xl)",
-              boxShadow: "var(--shadow-xs)",
-            }}
-          >
+          <div key={stat.label} className="p-4 text-center"
+            style={{ background: stat.bg, border: "1.5px solid var(--color-border-default)", borderRadius: "var(--radius-xl)" }}>
             <span style={{ color: stat.color }}>{stat.icon}</span>
             <p className="text-lg font-bold mt-1" style={{ color: "var(--color-text-primary)" }}>{stat.value}</p>
             <p className="text-xs" style={{ color: "var(--color-text-secondary)" }}>{stat.label}</p>
@@ -121,29 +139,44 @@ export default function WorkerDashboard() {
             {myJobs.map((b) => {
               const service  = SERVICES.find((s) => s.id === b.service)
               const customer = CUSTOMERS.find((c) => c.id === b.customerId)
+              const img      = SERVICE_IMAGES[b.service]
               return (
                 <Link key={b.id} href={`/worker/jobs/${b.id}`}>
                   <div
-                    className="flex items-center justify-between gap-4 px-5 py-4 cursor-pointer transition-all hover:bg-[var(--color-neutral-50)]"
+                    className="flex items-center gap-4 px-4 py-4 cursor-pointer overflow-hidden"
                     style={{
                       backgroundColor: "var(--color-neutral-0)",
                       border: "1.5px solid var(--color-border-default)",
                       borderRadius: "var(--radius-xl)",
+                      transition: "box-shadow 300ms ease, border-color 300ms ease",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.boxShadow = "0 6px 20px rgba(0,0,0,0.1)"
+                      e.currentTarget.style.borderColor = "var(--color-brand-200)"
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.boxShadow = "none"
+                      e.currentTarget.style.borderColor = "var(--color-border-default)"
                     }}
                   >
-                    <div className="flex items-center gap-3 min-w-0">
-                      <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
-                        style={{ background: "linear-gradient(135deg, #EDFAF2, #D0F2DF)", color: "var(--color-brand-600)" }}>
-                        {ICON_MAP[service?.icon ?? "droplets"]}
-                      </div>
-                      <div className="min-w-0">
-                        <p className="font-semibold truncate" style={{ color: "var(--color-text-primary)" }}>{service?.name}</p>
-                        <p className="text-xs" style={{ color: "var(--color-text-secondary)" }}>
-                          {customer?.name} · {b.slot.startTime} · {b.address}
-                        </p>
+                    <div className="w-14 h-14 rounded-xl overflow-hidden shrink-0">
+                      {img ? (
+                        <img src={img} alt={service?.name} className="w-full h-full object-cover" />
+                      ) : (
+                        <div className="w-full h-full" style={{ background: "linear-gradient(135deg, #EDFAF2, #D0F2DF)" }} />
+                      )}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-semibold truncate" style={{ color: "var(--color-text-primary)" }}>{service?.name}</p>
+                      <p className="text-xs truncate" style={{ color: "var(--color-text-secondary)" }}>
+                        {customer?.name} · {b.slot.startTime}
+                      </p>
+                      <div className="flex items-center gap-1 mt-0.5">
+                        <MapPin className="w-3 h-3 shrink-0" style={{ color: "var(--color-text-secondary)" }} />
+                        <p className="text-xs truncate" style={{ color: "var(--color-text-secondary)" }}>{b.address}</p>
                       </div>
                     </div>
-                    <div className="flex items-center gap-2 shrink-0">
+                    <div className="flex flex-col items-end gap-1.5 shrink-0">
                       <Badge
                         variant={b.status === "completed" ? "success" : b.status === "en_route" ? "warning" : "info"}
                         badgeStyle="soft" size="sm"
@@ -163,25 +196,45 @@ export default function WorkerDashboard() {
       {/* Quick links */}
       <div className="grid grid-cols-2 gap-4">
         <Link href="/worker/availability">
-          <div className="flex flex-col items-center gap-2 p-5 text-center cursor-pointer transition-all hover:scale-[1.02]"
+          <div
+            className="flex items-center gap-4 p-5 cursor-pointer"
             style={{
-              backgroundColor: "var(--color-neutral-0)",
-              border: "1.5px solid var(--color-border-default)",
+              background: "linear-gradient(135deg, #EDFAF2, #D0F2DF)",
+              border: "1.5px solid var(--color-brand-200)",
               borderRadius: "var(--radius-xl)",
-            }}>
-            <CalendarCheck className="w-7 h-7" style={{ color: "var(--color-brand-500)" }} />
-            <p className="text-sm font-semibold" style={{ color: "var(--color-text-primary)" }}>Set Availability</p>
+              transition: "transform 300ms ease",
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-2px)" }}
+            onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)" }}
+          >
+            <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: "var(--color-brand-100)" }}>
+              <CalendarCheck className="w-6 h-6" style={{ color: "var(--color-brand-600)" }} />
+            </div>
+            <div>
+              <p className="text-sm font-bold" style={{ color: "var(--color-brand-900)" }}>Set Availability</p>
+              <p className="text-xs" style={{ color: "var(--color-brand-700)" }}>Update your schedule</p>
+            </div>
           </div>
         </Link>
         <Link href="/worker/earnings">
-          <div className="flex flex-col items-center gap-2 p-5 text-center cursor-pointer transition-all hover:scale-[1.02]"
+          <div
+            className="flex items-center gap-4 p-5 cursor-pointer"
             style={{
-              backgroundColor: "var(--color-neutral-0)",
-              border: "1.5px solid var(--color-border-default)",
+              background: "linear-gradient(135deg, #FFFBEB, #FDE68A)",
+              border: "1.5px solid #FDE68A",
               borderRadius: "var(--radius-xl)",
-            }}>
-            <IndianRupee className="w-7 h-7" style={{ color: "var(--color-brand-500)" }} />
-            <p className="text-sm font-semibold" style={{ color: "var(--color-text-primary)" }}>Withdraw Earnings</p>
+              transition: "transform 300ms ease",
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-2px)" }}
+            onMouseLeave={(e) => { e.currentTarget.style.transform = "translateY(0)" }}
+          >
+            <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: "#FDE68A" }}>
+              <IndianRupee className="w-6 h-6" style={{ color: "#92400E" }} />
+            </div>
+            <div>
+              <p className="text-sm font-bold" style={{ color: "#78350F" }}>Withdraw Earnings</p>
+              <p className="text-xs" style={{ color: "#92400E" }}>1–2 business days</p>
+            </div>
           </div>
         </Link>
       </div>

@@ -10,8 +10,8 @@ import { formatINR } from "@/lib/utils"
 
 // Unsplash images per service
 const SERVICE_IMAGES: Record<string, string> = {
-  "seepage-repair": "https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=800&q=80",
-  "tiling":         "https://images.unsplash.com/photo-1484154218962-a197022b5858?w=800&q=80",
+  "seepage-repair": "https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=800&q=80",
+  "tiling":         "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80",
   "grouting":       "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80",
   "welding":        "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=800&q=80",
 }

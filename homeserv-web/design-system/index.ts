@@ -39,3 +39,6 @@ export type { RatingProps }      from "./Rating/Rating"
 
 export { EmptyState }            from "./EmptyState/EmptyState"
 export type { EmptyStateProps }  from "./EmptyState/EmptyState"
+
+export { AddressAutocomplete }   from "./AddressAutocomplete/AddressAutocomplete"
+export type { AddressAutocompleteProps, NominatimPlace } from "./AddressAutocomplete/AddressAutocomplete"

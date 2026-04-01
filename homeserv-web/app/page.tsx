@@ -249,52 +249,71 @@ export default function LandingPage() {
               <Link
                 key={s.id}
                 href="/auth/customer"
-                className={`group block ${isWide ? "sm:col-span-2 lg:col-span-1" : ""}`}
+                className={`block ${isWide ? "sm:col-span-2 lg:col-span-1" : ""}`}
               >
+                {/* Outer — lift + shadow only, NO overflow-hidden */}
                 <div
-                  className="relative overflow-hidden rounded-2xl h-64 sm:h-72 cursor-pointer"
+                  className="relative h-64 sm:h-72 rounded-2xl cursor-pointer"
                   style={{
                     boxShadow: "0 4px 24px rgba(0,0,0,0.10)",
                     transition: "transform 600ms cubic-bezier(0.25,0.46,0.45,0.94), box-shadow 600ms cubic-bezier(0.25,0.46,0.45,0.94)",
                   }}
                   onMouseEnter={e => {
-                    e.currentTarget.style.transform = "translateY(-6px)"
-                    e.currentTarget.style.boxShadow = "0 20px 48px rgba(0,0,0,0.22)"
+                    const card = e.currentTarget
+                    card.style.transform = "translateY(-6px)"
+                    card.style.boxShadow = "0 20px 48px rgba(0,0,0,0.22)"
+                    const img = card.querySelector<HTMLImageElement>("img")
+                    if (img) img.style.transform = "scale(1.1)"
+                    const arrow = card.querySelector<HTMLDivElement>("[data-arrow]")
+                    if (arrow) arrow.style.opacity = "1"
                   }}
                   onMouseLeave={e => {
-                    e.currentTarget.style.transform = "translateY(0)"
-                    e.currentTarget.style.boxShadow = "0 4px 24px rgba(0,0,0,0.10)"
+                    const card = e.currentTarget
+                    card.style.transform = "translateY(0)"
+                    card.style.boxShadow = "0 4px 24px rgba(0,0,0,0.10)"
+                    const img = card.querySelector<HTMLImageElement>("img")
+                    if (img) img.style.transform = "scale(1)"
+                    const arrow = card.querySelector<HTMLDivElement>("[data-arrow]")
+                    if (arrow) arrow.style.opacity = "0"
                   }}
                 >
-                  <Image
-                    src={img}
-                    alt={s.name}
-                    fill
-                    className="object-cover scale-100 group-hover:scale-110"
-                    style={{ transition: "transform 600ms cubic-bezier(0.25,0.46,0.45,0.94)", willChange: "transform" }}
-                    sizes="(max-width: 640px) 100vw, 50vw"
-                  />
-                  {/* Dark gradient from bottom — lightens slightly on hover */}
-                  <div className="absolute inset-0 transition-opacity duration-400 group-hover:opacity-80" style={{
-                    background: "linear-gradient(to top, rgba(4,14,8,0.88) 0%, rgba(4,14,8,0.3) 50%, transparent 100%)"
-                  }} />
+                  {/* Inner — clips the image zoom */}
+                  <div className="absolute inset-0 overflow-hidden rounded-2xl">
+                    <Image
+                      src={img}
+                      alt={s.name}
+                      fill
+                      className="object-cover"
+                      style={{
+                        transform: "scale(1)",
+                        transition: "transform 600ms cubic-bezier(0.25,0.46,0.45,0.94)",
+                        willChange: "transform",
+                      }}
+                      sizes="(max-width: 640px) 100vw, 50vw"
+                    />
+                    {/* Dark gradient from bottom */}
+                    <div className="absolute inset-0" style={{
+                      background: "linear-gradient(to top, rgba(4,14,8,0.88) 0%, rgba(4,14,8,0.3) 50%, transparent 100%)"
+                    }} />
+                  </div>
 
                   {/* Badge */}
                   {s.badge && (
-                    <span className="absolute top-4 left-4 text-[10px] font-bold px-2.5 py-1 rounded-full transition-transform duration-300 group-hover:scale-105"
+                    <span className="absolute top-4 left-4 z-10 text-[10px] font-bold px-2.5 py-1 rounded-full"
                       style={{ background: "linear-gradient(135deg,#1A9458,#2EB374)", color: "#fff" }}>
                       {s.badge}
                     </span>
                   )}
 
-                  {/* Arrow chip top right — slides in from right */}
-                  <div className="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center opacity-0 translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300"
-                    style={{ backgroundColor: "rgba(255,255,255,0.2)", backdropFilter: "blur(8px)" }}>
+                  {/* Arrow chip */}
+                  <div data-arrow className="absolute top-4 right-4 z-10 w-8 h-8 rounded-full flex items-center justify-center"
+                    style={{ backgroundColor: "rgba(255,255,255,0.2)", backdropFilter: "blur(8px)", opacity: 0, transition: "opacity 300ms ease" }}
+                  >
                     <ArrowRight className="w-4 h-4 text-white" />
                   </div>
 
-                  {/* Content — slides up slightly on hover */}
-                  <div className="absolute bottom-0 left-0 right-0 p-5 transition-transform duration-400 group-hover:-translate-y-1">
+                  {/* Content */}
+                  <div className="absolute bottom-0 left-0 right-0 z-10 p-5">
                     <div className="flex items-end justify-between">
                       <div>
                         <p className="text-xs font-semibold mb-1" style={{ color: "#6EE7B7" }}>

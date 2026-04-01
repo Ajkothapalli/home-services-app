@@ -117,8 +117,7 @@ export default function CustomerDashboard() {
       {/* ── Trust strip ── */}
       <div className="px-5 sm:px-8 mb-6">
         <div
-          className="flex items-center justify-between gap-3 px-4 py-3 rounded-2xl overflow-x-auto"
-          style={{ backgroundColor: "rgba(255,255,255,0.7)", border: "1px solid rgba(255,255,255,0.9)" }}
+          className="flex items-center justify-between gap-3 px-1 py-1 overflow-x-auto"
         >
           {[
             { icon: <Star className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />, value: "4.8★", label: "Avg Rating" },

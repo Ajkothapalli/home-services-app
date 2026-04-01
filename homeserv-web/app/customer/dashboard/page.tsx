@@ -354,11 +354,10 @@ export default function CustomerDashboard() {
             const accent  = accents[idx % accents.length]
             return (
               <Link key={b.id} href={`/customer/bookings/${b.id}`} className="block">
-                <div className="flex items-center gap-4 rounded-2xl overflow-hidden cursor-pointer"
+                <div className="flex items-center gap-4 rounded-2xl overflow-hidden cursor-pointer px-4"
                   style={{ backgroundColor: "white", boxShadow: "0 2px 12px rgba(0,0,0,0.06)", transition: "box-shadow 200ms ease, transform 200ms ease" }}
                   onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 8px 28px rgba(0,0,0,0.12)"; e.currentTarget.style.transform = "translateY(-1px)" }}
                   onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "0 2px 12px rgba(0,0,0,0.06)"; e.currentTarget.style.transform = "translateY(0)" }}>
-                  <div className="w-1 self-stretch shrink-0" style={{ backgroundColor: accent }} />
                   <div className="w-14 h-14 rounded-xl overflow-hidden shrink-0 my-3">
                     <img src={imgSrc} alt="" className="w-full h-full object-cover" />
                   </div>
@@ -367,7 +366,7 @@ export default function CustomerDashboard() {
                     <p className="text-xs truncate mt-0.5" style={{ color: "#6B7280" }}>
                       {formatBookingDate(b.slot.date)} · {b.slot.startTime} · {worker?.name}
                     </p>
-                    <p className="text-xs font-semibold mt-0.5" style={{ color: accent }}>{formatINR(b.quote.total)}</p>
+                    <p className="text-xs font-semibold mt-0.5" style={{ color: "var(--color-brand-600)" }}>{formatINR(b.quote.total)}</p>
                   </div>
                   <div className="pr-4 flex flex-col items-end gap-2">
                     <Badge variant={cfg.color} badgeStyle="soft" size="sm">{cfg.label}</Badge>

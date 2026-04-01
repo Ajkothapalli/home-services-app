@@ -58,21 +58,21 @@ const STATS = [
 const TESTIMONIALS = [
   {
     name: "Anjali S.",
-    location: "Bandra, Mumbai",
+    location: "Bengaluru, Karnataka",
     text: "The plumber arrived within 90 minutes and fixed our seepage issue completely. Transparent pricing, zero surprises.",
     rating: 5,
     avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&q=80",
   },
   {
     name: "Rohit M.",
-    location: "Powai, Mumbai",
+    location: "Hyderabad, Telangana",
     text: "Booked a tiling job on Sunday evening, professional was here Monday morning. Outstanding quality work.",
     rating: 5,
     avatar: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=80&q=80",
   },
   {
     name: "Meera P.",
-    location: "Andheri, Mumbai",
+    location: "Delhi, NCR",
     text: "Finally a platform that respects your time. Got the exact slot I wanted and the job was done in 2 hours.",
     rating: 5,
     avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&q=80",
@@ -147,7 +147,7 @@ export default function LandingPage() {
             {/* Badge */}
             <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest px-3.5 py-1.5 rounded-full mb-7"
               style={{ backgroundColor: "rgba(46,179,116,0.2)", color: "#6EE7B7", border: "1px solid rgba(46,179,116,0.35)" }}>
-              <MapPin className="w-3 h-3" /> Mumbai&apos;s #1 Home Repair Platform
+              <MapPin className="w-3 h-3" /> India&apos;s #1 Home Repair Platform
             </span>
 
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold leading-[1.1] mb-6 text-white"
@@ -193,7 +193,7 @@ export default function LandingPage() {
               </div>
               <div>
                 <p className="text-sm font-bold text-white">500+ verified pros</p>
-                <p className="text-xs" style={{ color: "#A7F3D0" }}>available in Mumbai today</p>
+                <p className="text-xs" style={{ color: "#A7F3D0" }}>available across India</p>
               </div>
             </div>
           </div>
@@ -469,7 +469,7 @@ export default function LandingPage() {
           <div className="relative flex flex-col md:flex-row items-center justify-between gap-8 px-8 sm:px-12 py-12 sm:py-14">
             <div>
               <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: "#6EE7B7" }}>
-                Available today in Mumbai
+                Available across India
               </p>
               <h2 className="text-3xl sm:text-4xl font-bold text-white mb-3" style={{ fontFamily: "var(--font-sora)" }}>
                 Ready to fix it<br />once and for all?
@@ -511,7 +511,7 @@ export default function LandingPage() {
                 <span className="font-bold text-white" style={{ fontFamily: "var(--font-sora)" }}>HomeServ</span>
               </div>
               <p className="text-sm leading-relaxed" style={{ color: "#6B7280" }}>
-                Mumbai&apos;s trusted platform for home repairs — fast, verified, and transparent.
+                India&apos;s trusted platform for home repairs — fast, verified, and transparent.
               </p>
             </div>
 
@@ -536,7 +536,7 @@ export default function LandingPage() {
                 </div>
                 <div className="flex items-center gap-2">
                   <MapPin className="w-3.5 h-3.5 shrink-0" />
-                  <span>Mumbai, Maharashtra</span>
+                  <span>Pan India</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <IndianRupee className="w-3.5 h-3.5 shrink-0" />
@@ -547,7 +547,7 @@ export default function LandingPage() {
           </div>
 
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-6">
-            <p className="text-xs" style={{ color: "#4B5563" }}>© 2026 HomeServ Technologies Pvt. Ltd. Mumbai, India.</p>
+            <p className="text-xs" style={{ color: "#4B5563" }}>© 2026 HomeServ Technologies Pvt. Ltd. India.</p>
             <div className="flex gap-4 text-xs" style={{ color: "#4B5563" }}>
               <a href="#" className="hover:text-white transition-colors">Privacy</a>
               <a href="#" className="hover:text-white transition-colors">Terms</a>

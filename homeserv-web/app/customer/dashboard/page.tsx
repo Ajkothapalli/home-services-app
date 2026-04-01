@@ -6,53 +6,6 @@ import { ArrowRight, CalendarDays, Clock, Bell, ChevronRight, CheckCircle2, Zap 
 import { Button, Badge } from "@/design-system"
 import { SERVICES, MOCK_BOOKINGS, WORKERS } from "@/lib/mock-data"
 
-// ── Seepage video card ────────────────────────────────────────────────────────
-function SeepageVideoCard({ serviceId, priceFrom }: { serviceId: string; priceFrom: number }) {
-  const videoRef = React.useRef<HTMLVideoElement>(null)
-  const [hovered, setHovered] = React.useState(false)
-
-  function onEnter() { setHovered(true); videoRef.current?.play() }
-  function onLeave() {
-    setHovered(false)
-    const v = videoRef.current
-    if (v) { v.pause(); v.currentTime = 0 }
-  }
-
-  return (
-    <Link href={`/customer/services/${serviceId}`} className="block h-full">
-      <div
-        onMouseEnter={onEnter} onMouseLeave={onLeave}
-        onFocus={onEnter} onBlur={onLeave}
-        className="relative h-full rounded-2xl overflow-hidden cursor-pointer"
-        style={{
-          boxShadow: hovered ? "0 16px 40px rgba(13,82,48,0.22)" : "0 2px 12px rgba(13,82,48,0.10)",
-          transition: "box-shadow 300ms ease",
-          minHeight: 180,
-        }}
-      >
-        <img src="/images/seepage-thumb.jpg" alt="Seepage Repair"
-          className="absolute inset-0 w-full h-full object-cover"
-          style={{ transform: hovered ? "scale(1.05)" : "scale(1)", transition: "transform 600ms ease" }}
-        />
-        <video ref={videoRef} src="/videos/seepage-repair.mp4" muted loop playsInline preload="metadata"
-          className="absolute inset-0 w-full h-full object-cover"
-          style={{ opacity: hovered ? 1 : 0, transition: "opacity 300ms ease" }}
-        />
-        <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(4,14,8,0.85) 0%, rgba(4,14,8,0.2) 55%, transparent 100%)" }} />
-        {hovered && (
-          <div className="absolute top-3 left-3 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full"
-            style={{ backgroundColor: "rgba(0,0,0,0.5)", color: "#6EE7B7" }}>
-            Playing
-          </div>
-        )}
-        <div className="absolute bottom-0 left-0 right-0 p-3.5">
-          <p className="text-sm font-bold text-white">Seepage Repair</p>
-          <p className="text-xs font-semibold mt-0.5" style={{ color: "#6EE7B7" }}>from ₹{priceFrom.toLocaleString("en-IN")}</p>
-        </div>
-      </div>
-    </Link>
-  )
-}
 
 // ── Service illustrations (unused — kept for reference) ──────────────────────
 function SeepageIllustration() {
@@ -309,15 +262,8 @@ export default function CustomerDashboard() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3" style={{ overflow: "visible" }}>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
           {SERVICES.map((s) => {
-            if (s.id === "seepage") {
-              return (
-                <div key={s.id} className="h-44" style={{ overflow: "visible" }}>
-                  <SeepageVideoCard serviceId={s.id} priceFrom={s.priceFrom} />
-                </div>
-              )
-            }
             const imgSrc = SERVICE_IMAGES[s.id] ?? FALLBACK_IMAGE
             return (
               <Link key={s.id} href={`/customer/services/${s.id}`} className="block">

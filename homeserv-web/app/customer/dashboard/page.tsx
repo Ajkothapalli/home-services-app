@@ -61,6 +61,12 @@ export default function CustomerDashboard() {
   const activeBooking  = MOCK_BOOKINGS.find((b) => b.status === "en_route" || b.status === "in_progress")
   const completedCount = MOCK_BOOKINGS.filter((b) => b.status === "completed").length
   const upcomingCount  = MOCK_BOOKINGS.filter((b) => ["confirmed", "assigned", "en_route"].includes(b.status)).length
+  const [query, setQuery] = React.useState("")
+
+  const filteredServices = SERVICES.filter((s) =>
+    s.name.toLowerCase().includes(query.toLowerCase()) ||
+    s.description.toLowerCase().includes(query.toLowerCase())
+  )
 
   return (
     <div className="max-w-4xl mx-auto pb-24">
@@ -90,6 +96,42 @@ export default function CustomerDashboard() {
         </div>
       </div>
 
+
+      {/* ── Search bar ── */}
+      <div className="px-5 sm:px-8 mb-5">
+        <div
+          className="flex items-center gap-3 px-4 py-3.5 rounded-2xl"
+          style={{
+            backgroundColor: "white",
+            boxShadow: "0 2px 16px rgba(13,82,48,0.08)",
+            border: "1.5px solid rgba(46,179,116,0.12)",
+            transition: "box-shadow 250ms ease, border-color 250ms ease",
+          }}
+          onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 6px 24px rgba(13,82,48,0.14)"; e.currentTarget.style.borderColor = "rgba(46,179,116,0.3)" }}
+          onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "0 2px 16px rgba(13,82,48,0.08)"; e.currentTarget.style.borderColor = "rgba(46,179,116,0.12)" }}
+        >
+          <Search className="w-4 h-4 shrink-0" style={{ color: "#2EB374" }} />
+          <input
+            type="text"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search services…"
+            className="flex-1 text-sm bg-transparent outline-none"
+            style={{ color: "#0D1B12" }}
+          />
+          {query ? (
+            <button onClick={() => setQuery("")} className="text-xs font-semibold px-3 py-1.5 rounded-full"
+              style={{ background: "#F3F4F6", color: "#6B7280" }}>
+              Clear
+            </button>
+          ) : (
+            <span className="text-xs font-bold px-3 py-1.5 rounded-full text-white shrink-0"
+              style={{ background: "linear-gradient(135deg,#0D5230,#2EB374)" }}>
+              Book Now
+            </span>
+          )}
+        </div>
+      </div>
 
       {/* ── Trust strip ── */}
       <div className="px-5 sm:px-8 mb-6">
@@ -186,8 +228,16 @@ export default function CustomerDashboard() {
           </Link>
         </div>
 
+        {filteredServices.length === 0 && (
+          <div className="flex flex-col items-center py-12 text-center">
+            <Search className="w-8 h-8 mb-3" style={{ color: "#D1D5DB" }} />
+            <p className="font-semibold text-sm" style={{ color: "#374151" }}>No services found</p>
+            <p className="text-xs mt-1" style={{ color: "#9CA3AF" }}>Try &ldquo;seepage&rdquo;, &ldquo;tiling&rdquo; or &ldquo;welding&rdquo;</p>
+          </div>
+        )}
+
         <div className="grid grid-cols-2 gap-3 sm:gap-4">
-          {SERVICES.map((s) => {
+          {filteredServices.map((s) => {
             const imgSrc = SERVICE_IMAGES[s.id] ?? FALLBACK_IMAGE
             const social = SERVICE_SOCIAL[s.id] ?? { pros: 30, jobs: "1k+" }
             return (

@@ -100,8 +100,8 @@ function WeldingIllustration() {
 }
 
 const SERVICE_IMAGES: Record<string, string> = {
-  "seepage":  "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=600&q=80",
-  "tiling":   "https://images.unsplash.com/photo-1615529328331-f8917597711f?w=600&q=80",
+  "seepage":  "https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=600&q=80", // water damage / seepage on wall
+  "tiling":   "https://images.unsplash.com/photo-1484154218962-a197022b5858?w=600&q=80", // worker laying floor tiles
   "grouting": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80",
   "welding":  "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=600&q=80",
 }

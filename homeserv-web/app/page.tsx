@@ -79,6 +79,66 @@ const TESTIMONIALS = [
   },
 ]
 
+const TYPING_PHRASES = [
+  "done right.",
+  "booked in 2 min.",
+  "no hidden charges.",
+  "verified pros only.",
+  "same-day available.",
+  "5-star guaranteed.",
+]
+
+function TypingText() {
+  const [phraseIdx, setPhraseIdx] = React.useState(0)
+  const [displayed, setDisplayed] = React.useState("")
+  const [deleting, setDeleting] = React.useState(false)
+  const [paused, setPaused] = React.useState(false)
+
+  React.useEffect(() => {
+    const current = TYPING_PHRASES[phraseIdx]
+
+    if (paused) {
+      const t = setTimeout(() => { setDeleting(true); setPaused(false) }, 1800)
+      return () => clearTimeout(t)
+    }
+
+    if (!deleting) {
+      if (displayed.length < current.length) {
+        const t = setTimeout(() => setDisplayed(current.slice(0, displayed.length + 1)), 65)
+        return () => clearTimeout(t)
+      } else {
+        setPaused(true)
+      }
+    } else {
+      if (displayed.length > 0) {
+        const t = setTimeout(() => setDisplayed(displayed.slice(0, -1)), 35)
+        return () => clearTimeout(t)
+      } else {
+        setDeleting(false)
+        setPhraseIdx((i) => (i + 1) % TYPING_PHRASES.length)
+      }
+    }
+  }, [displayed, deleting, paused, phraseIdx])
+
+  return (
+    <span style={{
+      background: "linear-gradient(135deg, #5DCB96, #2EB374, #9FE3BF)",
+      WebkitBackgroundClip: "text",
+      WebkitTextFillColor: "transparent",
+      backgroundClip: "text",
+    }}>
+      {displayed}
+      <span
+        style={{
+          WebkitTextFillColor: "#2EB374",
+          animation: "blink 1s step-start infinite",
+        }}
+      >|</span>
+      <style>{`@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }`}</style>
+    </span>
+  )
+}
+
 export default function LandingPage() {
   return (
     <div className="min-h-screen flex flex-col" style={{ backgroundColor: "#FAFAF9" }}>
@@ -150,14 +210,7 @@ export default function LandingPage() {
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold leading-[1.1] mb-6 text-white"
               style={{ fontFamily: "var(--font-sora)" }}>
               Home repairs,<br />
-              <span style={{
-                background: "linear-gradient(135deg, #5DCB96, #2EB374, #9FE3BF)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
-              }}>
-                done right.
-              </span>
+              <TypingText />
             </h1>
 
             <p className="text-base sm:text-lg mb-8 leading-relaxed" style={{ color: "#D1FAE5" }}>

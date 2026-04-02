@@ -56,12 +56,50 @@ function formatBookingDate(dateStr: string) {
   return new Date(dateStr).toLocaleDateString("en-IN", { day: "numeric", month: "short" })
 }
 
+type Weather = { temp: string; desc: string; emoji: string }
+
+function weatherEmoji(code: number): string {
+  if (code === 113) return "☀️"
+  if (code === 116) return "⛅"
+  if ([119, 122].includes(code)) return "☁️"
+  if ([143, 248, 260].includes(code)) return "🌫️"
+  if ([176, 263, 266, 293, 296].includes(code)) return "🌦️"
+  if ([299, 302, 305, 308].includes(code)) return "🌧️"
+  if ([200, 386, 389, 392].includes(code)) return "⛈️"
+  if ([179, 182, 185, 227, 230, 317, 320, 323, 326, 329, 332, 335, 338, 350, 368, 371, 374, 377].includes(code)) return "🌨️"
+  return "🌤️"
+}
+
 export default function CustomerDashboard() {
-  const customerName   = "Priya"
+  const customerName   = "Ajay"
   const activeBooking  = MOCK_BOOKINGS.find((b) => b.status === "en_route" || b.status === "in_progress")
   const completedCount = MOCK_BOOKINGS.filter((b) => b.status === "completed").length
   const upcomingCount  = MOCK_BOOKINGS.filter((b) => ["confirmed", "assigned", "en_route"].includes(b.status)).length
   const [query, setQuery] = React.useState("")
+  const [weather, setWeather] = React.useState<Weather | null>(null)
+
+  React.useEffect(() => {
+    if (!navigator.geolocation) return
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const { latitude: lat, longitude: lon } = pos.coords
+        fetch(`https://wttr.in/${lat},${lon}?format=j1`)
+          .then((r) => r.json())
+          .then((data) => {
+            const cur = data.current_condition?.[0]
+            if (!cur) return
+            const code = Number(cur.weatherCode)
+            setWeather({
+              temp: cur.temp_C + "°",
+              desc: cur.weatherDesc?.[0]?.value ?? "",
+              emoji: weatherEmoji(code),
+            })
+          })
+          .catch(() => {})
+      },
+      () => {}
+    )
+  }, [])
 
   const filteredServices = SERVICES.filter((s) =>
     s.name.toLowerCase().includes(query.toLowerCase()) ||
@@ -75,9 +113,19 @@ export default function CustomerDashboard() {
       <div className="flex items-center justify-between px-5 sm:px-8 pt-6 pb-5">
         <div>
           <p className="text-xs font-medium" style={{ color: "#4B7A5E" }}>{getGreeting()}</p>
-          <h1 className="text-xl font-bold mt-0.5" style={{ color: "#0D1B12", fontFamily: "var(--font-sora)" }}>
-            {customerName} 👋
-          </h1>
+          <div className="flex items-center gap-3 mt-0.5">
+            <h1 className="text-xl font-bold" style={{ color: "#0D1B12", fontFamily: "var(--font-sora)" }}>
+              {customerName} 👋
+            </h1>
+            {weather && (
+              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full"
+                style={{ backgroundColor: "rgba(255,255,255,0.8)", border: "1px solid rgba(46,179,116,0.15)", boxShadow: "0 1px 6px rgba(0,0,0,0.06)" }}>
+                <span className="text-base leading-none">{weather.emoji}</span>
+                <span className="text-xs font-bold" style={{ color: "#0D1B12" }}>{weather.temp}</span>
+                <span className="text-xs hidden sm:inline" style={{ color: "#6B7280" }}>{weather.desc}</span>
+              </div>
+            )}
+          </div>
         </div>
         <div className="flex items-center gap-3">
           <button

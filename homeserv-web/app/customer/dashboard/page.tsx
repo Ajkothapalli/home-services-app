@@ -98,17 +98,16 @@ export default function CustomerDashboard() {
 
 
       {/* ── Search bar ── */}
-      <div className="px-5 sm:px-8 mb-5">
+      <div className="px-5 sm:px-8 mb-5 relative">
         <div
-          className="flex items-center gap-3 px-4 py-3.5 rounded-2xl"
+          className="flex items-center gap-3 px-4 py-3.5"
           style={{
             backgroundColor: "white",
-            boxShadow: "0 2px 16px rgba(13,82,48,0.08)",
-            border: "1.5px solid rgba(46,179,116,0.12)",
+            boxShadow: query ? "0 6px 24px rgba(13,82,48,0.14)" : "0 2px 16px rgba(13,82,48,0.08)",
+            border: `1.5px solid ${query ? "rgba(46,179,116,0.4)" : "rgba(46,179,116,0.12)"}`,
+            borderRadius: query && filteredServices.length > 0 ? "1rem 1rem 0 0" : "1rem",
             transition: "box-shadow 250ms ease, border-color 250ms ease",
           }}
-          onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 6px 24px rgba(13,82,48,0.14)"; e.currentTarget.style.borderColor = "rgba(46,179,116,0.3)" }}
-          onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "0 2px 16px rgba(13,82,48,0.08)"; e.currentTarget.style.borderColor = "rgba(46,179,116,0.12)" }}
         >
           <Search className="w-4 h-4 shrink-0" style={{ color: "#2EB374" }} />
           <input
@@ -131,6 +130,65 @@ export default function CustomerDashboard() {
             </span>
           )}
         </div>
+
+        {/* Dropdown suggestions */}
+        {query && filteredServices.length > 0 && (
+          <div className="absolute left-5 right-5 sm:left-8 sm:right-8 z-50 overflow-hidden"
+            style={{
+              backgroundColor: "white",
+              border: "1.5px solid rgba(46,179,116,0.4)",
+              borderTop: "none",
+              borderRadius: "0 0 1rem 1rem",
+              boxShadow: "0 16px 40px rgba(13,82,48,0.16)",
+            }}>
+            {filteredServices.map((s, i) => {
+              const img = SERVICE_IMAGES[s.id] ?? FALLBACK_IMAGE
+              return (
+                <Link key={s.id} href={`/customer/services/${s.id}`} onClick={() => setQuery("")}>
+                  <div
+                    className="flex items-center gap-4 px-4 py-3 cursor-pointer transition-colors hover:bg-[#F0FDF4]"
+                    style={{ borderTop: i > 0 ? "1px solid rgba(46,179,116,0.08)" : "none" }}
+                  >
+                    <div className="w-12 h-12 rounded-xl overflow-hidden shrink-0">
+                      <img src={img} alt={s.name} className="w-full h-full object-cover" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-semibold text-sm" style={{ color: "#0D1B12" }}>{s.name}</p>
+                      <div className="flex items-center gap-2 mt-0.5">
+                        <div className="flex items-center gap-1">
+                          <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+                          <span className="text-xs" style={{ color: "#6B7280" }}>{s.rating}</span>
+                        </div>
+                        <span style={{ color: "#D1D5DB" }}>·</span>
+                        <span className="text-xs" style={{ color: "#6B7280" }}>{s.duration}</span>
+                      </div>
+                    </div>
+                    <div className="shrink-0 text-right">
+                      <p className="text-sm font-bold" style={{ color: "#2EB374" }}>{formatINR(s.priceFrom)}</p>
+                      <p className="text-[10px]" style={{ color: "#9CA3AF" }}>onwards</p>
+                    </div>
+                    <ArrowRight className="w-4 h-4 shrink-0" style={{ color: "#D1D5DB" }} />
+                  </div>
+                </Link>
+              )
+            })}
+          </div>
+        )}
+
+        {/* No results */}
+        {query && filteredServices.length === 0 && (
+          <div className="absolute left-5 right-5 sm:left-8 sm:right-8 z-50 px-4 py-6 text-center"
+            style={{
+              backgroundColor: "white",
+              border: "1.5px solid rgba(46,179,116,0.4)",
+              borderTop: "none",
+              borderRadius: "0 0 1rem 1rem",
+              boxShadow: "0 16px 40px rgba(13,82,48,0.16)",
+            }}>
+            <p className="text-sm font-semibold" style={{ color: "#374151" }}>No services found</p>
+            <p className="text-xs mt-1" style={{ color: "#9CA3AF" }}>Try &ldquo;seepage&rdquo;, &ldquo;tiling&rdquo; or &ldquo;welding&rdquo;</p>
+          </div>
+        )}
       </div>
 
       {/* ── Trust strip ── */}
@@ -228,16 +286,8 @@ export default function CustomerDashboard() {
           </Link>
         </div>
 
-        {filteredServices.length === 0 && (
-          <div className="flex flex-col items-center py-12 text-center">
-            <Search className="w-8 h-8 mb-3" style={{ color: "#D1D5DB" }} />
-            <p className="font-semibold text-sm" style={{ color: "#374151" }}>No services found</p>
-            <p className="text-xs mt-1" style={{ color: "#9CA3AF" }}>Try &ldquo;seepage&rdquo;, &ldquo;tiling&rdquo; or &ldquo;welding&rdquo;</p>
-          </div>
-        )}
-
         <div className="grid grid-cols-2 gap-3 sm:gap-4">
-          {filteredServices.map((s) => {
+          {SERVICES.map((s) => {
             const imgSrc = SERVICE_IMAGES[s.id] ?? FALLBACK_IMAGE
             const social = SERVICE_SOCIAL[s.id] ?? { pros: 30, jobs: "1k+" }
             return (
